@@ -1,46 +1,46 @@
 {
-    "title": "無名の主页",
-    "description": "一个默默无闻的主页",
-    "keywords": "無名,个人主页",
-    "author": "無名",
+    "title": "老罗的主页",
+    "description": "一个未经开发的场地",
+    "keywords": "老罗,个人主页",
+    "author": "老罗",
     "logo_img": "./img/icon/logo.png",
-    "logo_text_1": "imsyy",
+    "logo_text_1": "VirMao",
     "logo_text_2": "top",
-    "github": "imsyy",
-    "qq": "1539250352",
-    "email": "one@imsyy.top",
-    "bilibili": "98544142",
-    "telegram": "bottom_user",
+    "github": "rushbbbbb",
+    "qq": "1531407383",
+    "email": "luo1531407383@gmail.com",
+    "bilibili": "8082553",
+    "telegram": "vir mao",
     "link_1": [
-        "https://blog.imsyy.top/",
+        "https://blog.csdn.net/weixin_62147083",
         "fa-solid fa-blog",
         "博客"
     ],
     "link_2": [
-        "https://drive.imsyy.top/",
+        "https://pan.baidu.com/pcloud/home",
         "fa-solid fa-cloud",
         "网盘"
     ],
     "link_3": [
-        "https://music.imsyy.top/",
+        "https://music.163.com/#/user/home?id=310015138",
         "fa-solid fa-music",
         "音乐"
     ],
     "link_4": [
-        "https://nav.imsyy.top/",
+        "https://www.google.com/",
         "fa-solid fa-compass",
         "起始页"
     ],
     "link_5": [
-        "https://web.imsyy.top/",
+        "htmls/bookmarks.html",
         "fa-solid fa-book-bookmark",
         "网址集"
     ],
     "link_6": [
-        "https://lab.imsyy.top/",
+        "https://drive.google.com/drive/my-drive",
         "fa-solid fa-flask",
         "实验室"
     ],
-    "Copyright_text": "無名",
-    "beian": "豫ICP备2022018134号-1"
+    "Copyright_text": "老罗",
+    "beian": "快了"
 }

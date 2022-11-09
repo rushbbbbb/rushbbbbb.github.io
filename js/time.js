@@ -46,6 +46,7 @@ function init_life_time() {
         getAsideLifeTime();
     }, 1000);
 }
+
 init_life_time()
 
 now = new Date(), hour = now.getHours()

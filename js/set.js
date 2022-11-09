@@ -5,7 +5,6 @@ $(function () {
     $.getJSON(
         url,
         function (data) {
-            /* 页头数据 */
             $('title').text(data.title);
             $('#loading-title').html(data.title);
             $("meta[name='description']").attr('content', data.description);
@@ -14,7 +13,6 @@ $(function () {
             /* 基础信息 */
             $("#logo-img").attr("src", data.logo_img);
             $('#logo-text-1').html(data.logo_text_1);
-            $('#logo-text-2').html("." + data.logo_text_2);
             $('#logo-title-other').html(data.logo_text_1);
             $('#logo-title-other-small').html("." + data.logo_text_2);
             $('#logo-text-small').html(data.logo_text_1 + "." + data.logo_text_2);
@@ -23,7 +21,6 @@ $(function () {
             $('#qq').attr('href', "https://wpa.qq.com/msgrd?v=3&uin=" + data.qq + "&site=qq&menu=yes");
             $('#email').attr('href', "mailto:" + data.email);
             $('#bilibili').attr('href', "https://space.bilibili.com/" + data.bilibili);
-            $('#telegram').attr('href', "https://t.me/" + data.telegram);
             /* 快捷链接 */
             $('#link-url-1').attr('href', data.link_1[0]);
             $('#link-icon-1').attr('class', data.link_1[1]);
@@ -43,9 +40,6 @@ $(function () {
             $('#link-url-6').attr('href', data.link_6[0]);
             $('#link-icon-6').attr('class', data.link_6[1]);
             $('#link-name-6').html(data.link_6[2]);
-            //页脚版权
-            $('#power-text').html(data.Copyright_text);
-            $('#beian').html("&amp;&nbsp;" + data.beian);
         }
     )
 });
@@ -82,7 +76,6 @@ let bg_img_preinstall = {
 // 更改背景图片
 function setBgImgInit() {
     let bg_img = getBgImg();
-    $("input[name='wallpaper-type'][value=" + bg_img["type"] + "]").click();
 
     switch (bg_img["type"]) {
         case "1":
