@@ -32,7 +32,13 @@ p {
     cursor: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' width='10px' height='10px'><circle cx='4' cy='4' r='4' fill='white' /></svg>") 4 4, auto !important;
 }
 
-
+.cards.iframe {
+    display: flex;
+    /* justify-self:center; */
+    /* align-items: center; */
+    width: 60%;
+    height: 60%;
+}
 a:hover {
     color: white;
 }
@@ -260,33 +266,20 @@ span#change {
 }
 
 /*时间卡片*/
-.col.times {
+.col.vedios {
     margin-left: 0.75rem;
 }
-
-.time {
+/* 视频卡片 */
+.vedio {
     width: 100%;
     background: rgb(0 0 0 / 25%);
     backdrop-filter: blur(10px);
-    padding: 20px;
+    padding: 6px;
     border-radius: 6px;
     text-align: center;
     display: flex;
     flex-direction: column;
-    height: 165px;
     font-size: 1.10rem;
-}
-
-span.time-text {
-    font-size: 3.25rem;
-    letter-spacing: 2px;
-    font-family: 'UnidreamLED' !important;
-}
-
-.weather {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
 }
 
 /*分割线*/
