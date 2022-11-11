@@ -22,7 +22,7 @@ window.addEventListener('load', function () {
     $('#bg').css("cssText", "transform: scale(1);filter: blur(0px);transition: ease 1.5s;");
     $('.cover').css("cssText", "opacity: 1;transition: ease 1.5s;");
     $('#section').css("cssText", "transform: scale(1) !important;opacity: 1 !important;filter: blur(0px) !important");
-
+    
     //用户欢迎
     setTimeout(function () {
         iziToast.show({
@@ -115,13 +115,17 @@ $('#hitokoto').click(function () {
     }).mouseout(function () {
     $("#link-text").html("通过这里联系我");
     });
-    $("#telegram").mouseover(function () {
-    $("#link-text").html("你懂的 ~");
-    }).mouseout(function () {
-    $("#link-text").html("通过这里联系我");
-    });
 }
+var num = 0;
 
+// $(".des").on('mouseover',  function () {
+//     $(".GoogleSearch").css("height","100%");
+// });
+
+// $("#des").on('mouseout', '.GoogleSearch', function () {
+//     $('#switchmore').remove('GoogleSearch');
+//     num = 0;
+// });
 
 //更多弹窗页面
 $('#openmore').on('click', function () {
@@ -134,3 +138,7 @@ $('#closemore').on('click', function () {
     $('#row').css("display", "flex");
     $('#more').css("display", "flex");
 });
+
+// window.addEventListener("load", function() {
+//     $()
+// })

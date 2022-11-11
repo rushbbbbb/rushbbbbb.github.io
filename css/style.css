@@ -31,11 +31,8 @@ p {
     user-select: none;
     cursor: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' width='10px' height='10px'><circle cx='4' cy='4' r='4' fill='white' /></svg>") 4 4, auto !important;
 }
-
 .cards.iframe {
     display: flex;
-    /* justify-self:center; */
-    /* align-items: center; */
     width: 60%;
     height: 60%;
 }
@@ -186,6 +183,36 @@ main {
     line-height: 2rem;
     margin-right: auto;
 }
+#change1 {
+    margin-left: 30%;
+    font-size:xx-large;
+}
+#switchmore:hover #change1{
+    margin-left: 0%;
+}
+
+#change2 {
+    margin-left: 30%;
+    font-size:xx-large;
+}
+#switchmore:hover #change1{
+    margin-left: 10%;
+}
+
+input {
+    color: black;
+}
+.GoogleSearch {
+    width: 100%;
+    height: 0px;
+    overflow: hidden;
+    transition: all ease 1.25s;
+}
+
+#switchmore:hover .GoogleSearch{
+    transition: all ease 1.25s;
+    height: 80px;
+} 
 
 span#change {
     font-family: 'Pacifico-Regular' !important;
@@ -265,10 +292,6 @@ span#change {
     font-size: 2.25rem;
 }
 
-/*时间卡片*/
-.col.vedios {
-    margin-left: 0.75rem;
-}
 /* 视频卡片 */
 .vedio {
     width: 100%;
@@ -281,7 +304,9 @@ span#change {
     flex-direction: column;
     font-size: 1.10rem;
 }
-
+.col.vedios {
+    margin-left: 0.75rem;
+}
 /*分割线*/
 .line {
     margin: 1rem 0.25rem;
