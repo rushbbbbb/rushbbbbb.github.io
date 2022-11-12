@@ -4,12 +4,16 @@
     z-index: 999998;
     width: 50%;
     height: 100%;
+    background-size: cover;
+    background-position:bottom;
     background-color: rgb(81 81 81 / 80%);
+    background-image: url("D:/github/c_kui/home-master/img/forLeft.jpg");
     transition: all 0.7s cubic-bezier(0.42, 0, 0, 1.01);
     backdrop-filter: blur(10px);
 }
 
 #loading-box .loading-right-bg {
+    background-image: url("D:/github/c_kui/home-master/img/forRight.jpg");
     right: 0;
 }
 
