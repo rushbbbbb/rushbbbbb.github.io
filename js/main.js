@@ -15,6 +15,42 @@ iziToast.settings({
     icon: 'Fontawesome',
     iconColor: '#efefef',
 });
+var JJLIN = [
+    "BV1x341147Su",
+    "BV1wT4y1d7wq",
+    "BV1af4y1c7H4",
+    "BV1Qq4y1P74j",
+    "BV1ZT4y1Z72y",
+    "BV1sh411H75M",
+    "BV1WU4y1A7dM",
+    "BV1fq4y1A75W",
+    "BV1A34y1D7T9",
+    "BV1i34y197yC",
+    "BV1nF411T7zM",
+    "BV1JL4y1e7Ss",
+    "BV17v411E7sA",
+    "BV1My4y1V7cG",
+    "BV1qb4y167JS",
+    "BV1iv411K7qC",
+    "BV1D8411W7E3",
+    "BV1we4y1q7Tw",
+    "BV1D3411G7pf",
+    "BV1uA4y1D7be",
+    "BV1uA4y1D7be",
+    "BV1T44y1N7Zc",
+    "BV18Z4y1B7RE",
+    "BV16a411h7V8",
+    "BV16g41157B6",
+    "BV1cv411T7Zb",
+    "BV16o4y1Q7es",
+    "BV1Yf4y157nw",
+    "BV19X4y1w7Hn",
+    "BV1wb4y1y723",
+    "BV1UU4y1K7rA",
+    "BV1S34y1B7NW",
+    "BV1pa411B7Pj",
+    "BV1gL411F7vS"
+];
 //加载完成后执行
 window.addEventListener('load', function () {
     //载入动画
@@ -22,13 +58,16 @@ window.addEventListener('load', function () {
     $('#bg').css("cssText", "transform: scale(1);filter: blur(0px);transition: ease 1.5s;");
     $('.cover').css("cssText", "opacity: 1;transition: ease 1.5s;");
     $('#section').css("cssText", "transform: scale(1) !important;opacity: 1 !important;filter: blur(0px) !important");
-    
+    var child = JJLIN[Math.floor(Math.random()*(JJLIN.length))];
+    var Obj = $("<iframe class = 'music' src='https://player.bilibili.com/player.html?bvid=" +child+"&danmaku=0&t=0' scrolling='no' border='0' frameborder='no' framespacing='0' allowfullscreen='true' ></iframe>");
+    $(".vedio").empty();
+    $(".vedio").append(Obj);
+
     //用户欢迎
     setTimeout(function () {
         iziToast.show({
             timeout: 2500,
             icon: false,
-            title: hello,
             message: '欢迎来到我的主页'
         });
     }, 800);
@@ -69,6 +108,23 @@ $('#hitokoto').click(function () {
             timeout: 1000,
             icon: "fa-solid fa-circle-exclamation",
             message: '你点太快了吧'
+        });
+    }
+});
+
+$(".des").mouseover(function(){
+    if (times == 0) {
+        times = 1;
+        let index = setInterval(function () {
+            times--;
+            if (times == 0) {
+                clearInterval(index);
+            }
+        }, 2000);
+        iziToast.show({
+            timeout: 1000,
+            icon:   "fa-regular fa-face-flushed " ,
+            message: '被你发现啦'
         });
     }
 });
@@ -133,45 +189,8 @@ $('#closemore').on('click', function () {
 
 
 $(".line").on('click', function() {
-    var JJLIN = [
-        "BV1x341147Su",
-        "BV1wT4y1d7wq",
-        "BV1af4y1c7H4",
-        "BV1Qq4y1P74j",
-        "BV1ZT4y1Z72y",
-        "BV1sh411H75M",
-        "BV1WU4y1A7dM",
-        "BV1fq4y1A75W",
-        "BV1A34y1D7T9",
-        "BV1i34y197yC",
-        "BV1nF411T7zM",
-        "BV1JL4y1e7Ss",
-        "BV17v411E7sA",
-        "BV1My4y1V7cG",
-        "BV1qb4y167JS",
-        "BV1iv411K7qC",
-        "BV1D8411W7E3",
-        "BV1we4y1q7Tw",
-        "BV1D3411G7pf",
-        "BV1uA4y1D7be",
-        "BV1uA4y1D7be",
-        "BV1T44y1N7Zc",
-        "BV18Z4y1B7RE",
-        "BV16a411h7V8",
-        "BV16g41157B6",
-        "BV1cv411T7Zb",
-        "BV16o4y1Q7es",
-        "BV1Yf4y157nw",
-        "BV19X4y1w7Hn",
-        "BV1wb4y1y723",
-        "BV1UU4y1K7rA",
-        "BV1S34y1B7NW",
-        "BV1pa411B7Pj",
-        "BV1gL411F7vS"
-    ];
     var child = JJLIN[Math.floor(Math.random()*(JJLIN.length))];
-    var Obj = $("<iframe class = 'music' src='https://player.bilibili.com/player.html?bvid=" +child+"' scrolling='no' border='0' frameborder='no' framespacing='0' allowfullscreen='true' ></iframe>");
+    var Obj = $("<iframe class = 'music' src='https://player.bilibili.com/player.html?bvid=" +child+"&danmaku=0&t=0' scrolling='no' border='0' frameborder='no' framespacing='0' allowfullscreen='true' ></iframe>");
     $(".vedio").empty();
     $(".vedio").append(Obj);
-    // var content = document.getElementsByClassName("vedio");
 })
