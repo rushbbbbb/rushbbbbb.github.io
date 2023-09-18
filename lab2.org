@@ -5,7 +5,10 @@
 - https://medium.com/@boutnaru/linux-kernel-task-struct-829f51d97275
 - https://elixir.bootlin.com/linux/v6.2-rc1/source/include/linux/sched.h#L737
 - https://www.stackscale.com/blog/inodes-linux/#Metadata_stored_in_an_inode
-
+- https://man7.org/linux/man-pages/man2/fork.2.html
+- https://en.wikipedia.org/wiki/Unistd.h
+- https://github.com/torvalds/linux/blob/master/arch/x86/entry/entry_64.S
+- https://github.com/torvalds/linux/blob/master/kernel/printk/printk.c
 - man pahole
 
 ** Answer the questions
@@ -38,10 +41,24 @@ stores information about a file or directory.Inodes contain metadata about the f
 - Last modification time
 
 *** struct file;
+
+it plays a crucial role in managing open files, file operations, and file I/O.
+
 *** fork();
+
+creates a new process by duplicating the calling process.
+
 *** include/asm-generic/unistd.h
+
+it is the name of the header file that provides access to the POSIX operating system API.
+
 *** arch/x86_64/entry.S
+
+contains the system-call and fault low-level handling routines.
+
 *** kernel/printk.c
+
+Modified to make sys_syslog() more flexible.
 
 #+begin_src text
 Commod 'ps' report a snapshot of the current processes.
