@@ -1,7 +1,6 @@
-* proc file-system lab
+* Play with the kernel lab
 ** Reference
 - http://coffeenix.net/doc/kernel/startup.html/x72.html#START-KERNEL--FIG
-- https://elixir.bootlin.com/linux/latest/source
 - https://medium.com/@boutnaru/linux-kernel-task-struct-829f51d97275
 - https://elixir.bootlin.com/linux/v6.2-rc1/source/include/linux/sched.h#L737
 - https://www.stackscale.com/blog/inodes-linux/#Metadata_stored_in_an_inode
@@ -10,18 +9,17 @@
 - https://github.com/torvalds/linux/blob/master/arch/x86/entry/entry_64.S
 - https://github.com/torvalds/linux/blob/master/kernel/printk/printk.c
 - man pahole
+- http://coffeenix.net/doc/kernel/startup.html/x332.html
 
 ** Answer the questions
 
-
-
 *** start_kernel();
 
-it orchestrates all of Linux's startup procedure
+It orchestrates all of Linux's startup procedure
 
 *** init();
 
-
+It completes the kernel's boot process by calling do_basic_setup() to initialize the kernel's PCI and network features. The remaining memory allocated for initialization is discarded, scheduling is enabled, the standard input, output and error streams are created 
 
 *** struct task_struct;
 
@@ -30,7 +28,7 @@ Among those data elements are: credentials ,priority, PID (process ID), PPID (pa
 
 *** struct inode;
 
-stores information about a file or directory.Inodes contain metadata about the file or directory, including:
+It stores information about a file or directory.Inodes contain metadata about the file or directory, including:
 - File type
 - File size
 - Owner ID
@@ -42,28 +40,20 @@ stores information about a file or directory.Inodes contain metadata about the f
 
 *** struct file;
 
-it plays a crucial role in managing open files, file operations, and file I/O.
+It plays a crucial role in managing open files, file operations, and file I/O.
 
 *** fork();
 
-creates a new process by duplicating the calling process.
+It creates a new process by duplicating the calling process.
 
 *** include/asm-generic/unistd.h
 
-it is the name of the header file that provides access to the POSIX operating system API.
+It is the name of the header file that provides access to the POSIX operating system API.
 
 *** arch/x86_64/entry.S
 
-contains the system-call and fault low-level handling routines.
+It contains the system-call and fault low-level handling routines.
 
 *** kernel/printk.c
 
 Modified to make sys_syslog() more flexible.
-
-#+begin_src text
-Commod 'ps' report a snapshot of the current processes.
-Commod 'head -2' and 'tail -1' get the first process --- bash.
-Commod 'cut -f5 -d' '' get the first fields --- PID of bash
-#+end_src
-So we can make it simply : *cd //proc//[PID of bash] && ls -l*
-The purpose of this command is to enter the //proc//[PID of bash] directory and list the detailed contents of the folder.
