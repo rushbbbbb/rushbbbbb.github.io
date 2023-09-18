@@ -3,7 +3,6 @@
 #+OPTIONS: toc:nil num:nil
 #+SETUPFILE: theme-readtheorg.setup
 
-* Play with the kernel lab
 ** Reference
 - http://coffeenix.net/doc/kernel/startup.html/x72.html#START-KERNEL--FIG
 - https://medium.com/@boutnaru/linux-kernel-task-struct-829f51d97275
