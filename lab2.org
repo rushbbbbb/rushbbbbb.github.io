@@ -1,16 +1,42 @@
 * proc file-system lab
 ** Reference
-- man uname
-- 
+- http://coffeenix.net/doc/kernel/startup.html/x72.html#START-KERNEL--FIG
+- https://elixir.bootlin.com/linux/latest/source
+- https://medium.com/@boutnaru/linux-kernel-task-struct-829f51d97275
+- https://elixir.bootlin.com/linux/v6.2-rc1/source/include/linux/sched.h#L737
+- https://www.stackscale.com/blog/inodes-linux/#Metadata_stored_in_an_inode
+
+- man pahole
+
 ** Answer the questions
 
 
 
 *** start_kernel();
-- it orchestrates all of Linux's startup procedure
+
+it orchestrates all of Linux's startup procedure
+
 *** init();
+
+
+
 *** struct task_struct;
+
+“task_struct” holds the data an operating system needs about a specific process.
+Among those data elements are: credentials ,priority, PID (process ID), PPID (parent process ID), list of open resources, memory space range information, namespace information
+
 *** struct inode;
+
+stores information about a file or directory.Inodes contain metadata about the file or directory, including:
+- File type
+- File size
+- Owner ID
+- Group ID
+- Read, write and execute permissions
+- Last access time
+- Last change time
+- Last modification time
+
 *** struct file;
 *** fork();
 *** include/asm-generic/unistd.h
