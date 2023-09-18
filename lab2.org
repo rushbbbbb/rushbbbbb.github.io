@@ -1,3 +1,8 @@
+#+TITLE: Play with the kernel lab
+#+AUTHOR: Junbo Luo
+#+OPTIONS: toc:nil num:nil
+#+SETUPFILE: theme-readtheorg.setup
+
 * Play with the kernel lab
 ** Reference
 - http://coffeenix.net/doc/kernel/startup.html/x72.html#START-KERNEL--FIG
