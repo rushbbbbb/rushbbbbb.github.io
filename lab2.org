@@ -1,134 +1,22 @@
 * proc file-system lab
 ** Reference
 - man uname
-- man uptime
-- man top
-- man free
-- man ps
-- man cut
-- https://linuxize.com/post/get-cpu-information-on-linux/
-- https://www.kernel.org/doc/Documentation/ABI/testing/procfs-diskstats
-- https://linux.vbird.org/linux_basic/centos7/0320bash.php#pipe
-- https://support.checkpoint.com/results/sk/sk65143
-- https://www.cnblogs.com/arnoldlu/p/12162860.html
-- https://linux.die.net/man/5/proc
-
+- 
 ** Answer the questions
 
-*** What's the CPU type and model? (/proc/cpuinfo)
-
-#+begin_src sh
-$ cat /proc/cpuinfo | grep model | head -2
-*OUTOUT*
-model           : 141
-model name      : 11th Gen Intel(R) Core(TM) i5-11400H @ 2.70GHz
-#+end_src
-
-*** What version of the Linux kernel are you using? (uname)
-
-#+begin_src sh
-$ uname -r
-*OUTOUT*
-5.15.90.4-microsoft-standard-WSL2
-#+end_src
 
 
-*** How long has it been since your PC last booted? (uptime)
+*** start_kernel();
+- it orchestrates all of Linux's startup procedure
+*** init();
+*** struct task_struct;
+*** struct inode;
+*** struct file;
+*** fork();
+*** include/asm-generic/unistd.h
+*** arch/x86_64/entry.S
+*** kernel/printk.c
 
-#+begin_src sh
-$ uptime -p
-*OUTOUT*
-up 49 minutes
-#+end_src
-
-*** How much of the total CPU time has been spent executing in user mode? kernel mode? idle? (top)
-#+begin_src sh
-$ top
-*OUTOUT*
-top - 21:02:29 up 14:11,  1 user,  load average: 0.00, 0.02, 0.00
-%Cpu(s):  0.1 us,  0.1 sy,  0.0 ni, 99.7 id..
-#+end_src
-As above text I got, I should also find out how many cores my processor has and 
-how long has cpus been since your PC last booted. So we can got the total CPU time has been spent executing:
-#+begin_src sh
-user mode   : 0.1% * 7:32 * 12  = 5.4(minutes)
-kernel mode : 0.1% * 7:32 * 12  = 5.4(minutes)
-idle        : 99.7% * 7:32 * 12 = 441.1(minutes)
-#+end_src
-
-*** How much memory is configured in your PC? (top,free,/proc/meminfo)
-
-$ free -m
-*OUTOUT*
-|          | total | used | free | shared | buff/cache  | available |
-|----------+-------+------+------+--------+-------------+-----------|
-| Mem      | 7869 | 859 | 6261 | 3 | 747    | 6773 |
-| Swap     | 2048 | 0  | 2048 |   |    |  |
-As we see it, 7869M memory is configured in my PC.
-
-*** How much memory is currently available? (top,free,/proc/meminfo)
-
-#+begin_src sh
-6773M
-#+end_src
-
-*** How many disk read/write requests have been made? (/proc/diskstats)
-
-#+begin_src sh
-$ cat /proc/diskstats
-*OUTOUT*
-8  0  sda 1139  433  148122 312  0     0     0      0     0 520    312    0   0 0      0   0     0
-8  16 sdb 103   0    4712   35   2     0     8      12    0 70     56     0   0 0      0   1     8
-8  32 sdc 17949 2499 827194 5304 21834 14325 504136 89556 0 142210 123451 496 6 238608 140 15626 28449
-read requests  = 433 + 0 + 2499;  
-write requests = 0 + 0 + 14325;
-#+end_src
-
-*** How many context switches has the kernel performed? (/proc/stat)
-
-#+begin_src sh
-$ grep ctxt  /proc/stat
-*OUTOUT*
-31663371
-#+end_src
-
-*** How many context switches has a process had? (/proc/[pid]/status)
-I choose a process which pid equels 100383. 
-#+begin_src sh
-$ cat /proc/100383/status | grep ctxt
-*OUTOUT*
-voluntary_ctxt_switches:        331
-nonvoluntary_ctxt_switches:     7
-#+end_src
-So we can get PID 100383 had *338* context switches
-
-*** How many processes have been created since the system was booted? (/proc/stat)
-#+begin_src sh
-$ cat stat | grep processes
-*OUTOUT*
-processes 129854
-#+end_src
-
-
-*** How many processes are there in the ready queue? (/proc/stat)
-#+begin_src sh
-$ cat /proc/loadavg
-*OUTOUT*
-0.04 0.06 0.01 1/344 134664
-#+end_src
-So there are *344* processes in the ready queue
-
-*** How many processes are blocked waiting for I/O to complete? (/proc/stat)
-#+begin_src sh
-$ cat stat | grep cpu | head -1
-*OUTOUT*
-cpu  91918 208 76901 46373253 15067 0 19846 0 0 0
-#+end_src
-So *15067* processes are blocked waiting for I/O to complete.
-
-*** What does the following command do?
-*cd /proc/`ps | head -2 | tail -1 | cut -f5 -d' '` && ls -l*
-First let's look at words in single quotation marks:
 #+begin_src text
 Commod 'ps' report a snapshot of the current processes.
 Commod 'head -2' and 'tail -1' get the first process --- bash.
