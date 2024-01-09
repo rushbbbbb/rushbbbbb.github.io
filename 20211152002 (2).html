@@ -1,0 +1,1885 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="cn" xml:lang="cn">
+<head>
+<!-- 2023-12-18 Mon 11:10 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>《操作系统原理》实验报告</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="罗俊博(20211152002)" />
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/css/readtheorg.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/js/readtheorg.js"></script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">《操作系统原理》实验报告</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org72a0bc8">1. Approaching to the Linux kernel</a>
+<ul>
+<li><a href="#org1046308">1.1. 实验内容</a></li>
+<li><a href="#orga42a5c6">1.2. 实验步骤及思考题</a></li>
+</ul>
+</li>
+<li><a href="#org79adf75">2. Process management</a>
+<ul>
+<li><a href="#org421e50d">2.1. Process creation</a></li>
+<li><a href="#orgbd7f077">2.2. Thread</a></li>
+<li><a href="#orgd4ee964">2.3. IPC</a></li>
+</ul>
+</li>
+<li><a href="#orgf4669ff">3. Memory management</a>
+<ul>
+<li><a href="#org56b7eae">3.1. Basic commands</a></li>
+<li><a href="#orgfc6d8ed">3.2. Shared Memory Segments</a></li>
+<li><a href="#orga02622c">3.3. Memory Mapped Files</a></li>
+</ul>
+</li>
+<li><a href="#org32b51f4">4. File system</a>
+<ul>
+<li><a href="#org3706829">4.1. 实验步骤</a></li>
+<li><a href="#org8ab216e">4.2. Questions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="org-center">
+<p>
+Don't forget to answer the sum up questions in your email message!
+</p>
+</div>
+
+<div id="outline-container-org72a0bc8" class="outline-2">
+<h2 id="org72a0bc8"><span class="section-number-2">1</span> Approaching to the Linux kernel</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-org1046308" class="outline-3">
+<h3 id="org1046308"><span class="section-number-3">1.1</span> 实验内容</h3>
+<div class="outline-text-3" id="text-1-1">
+<ul class="org-ul">
+<li><a href="http://cs6.swfu.edu.cn/~wx672/lecture_notes/os/lab.html#sec-2">http://cs6.swfu.edu.cn/~wx672/lecture_notes/os/lab.html#sec-2</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orga42a5c6" class="outline-3">
+<h3 id="orga42a5c6"><span class="section-number-3">1.2</span> 实验步骤及思考题</h3>
+<div class="outline-text-3" id="text-1-2">
+</div>
+<div id="outline-container-orgd7df9cf" class="outline-4">
+<h4 id="orgd7df9cf"><span class="section-number-4">1.2.1</span> proc file-system</h4>
+<div class="outline-text-4" id="text-1-2-1">
+</div>
+<ol class="org-ol">
+<li><a id="orgf2efc57"></a>Questions<br />
+<div class="outline-text-5" id="text-1-2-1-1">
+<ol class="org-ol">
+<li><p>
+What's the CPU type and model? <code>/proc/cpuinfo</code>
+</p>
+<pre class="example">
+cat /proc/cpuinfo | grep model | head -2
+model name      : 11th Gen Intel(R) Core(TM) i5-11400H @ 2.70GHz
+</pre></li>
+<li><p>
+What version of the Linux kernel are you using? <code>uname</code>
+</p>
+<pre class="example">
+uname -r
+5.15.90.4-microsoft-standard-WSL2
+</pre></li>
+<li><p>
+How long has it been since your PC last booted? <code>uptime</code>
+</p>
+<pre class="example">
+uptime -p
+up 49 minutes
+</pre></li>
+<li><p>
+How much of the total CPU time has been spent executing in user mode? kernel mode? idle? <code>top</code>
+</p>
+<pre class="example">
+top
+
+top - 21:02:29 up 14:11,  1 user,  load average: 0.00, 0.02, 0.00
+%Cpu(s):  0.1 us,  0.1 sy,  0.0 ni, 99.7 id.. 
+As above text I got, I should also find out how many cores my processor has and 
+how long has cpus been since your PC last booted. So we can got the total CPU time has been spent executing:
+user mode   : 0.1% * 7:32 * 12  = 5.4(minutes)
+kernel mode : 0.1% * 7:32 * 12  = 5.4(minutes)
+idle        : 99.7% * 7:32 * 12 = 441.1(minutes)
+</pre></li>
+<li><p>
+How much memory is configured in your PC? <code>top,free,/proc/meminfo</code>
+</p>
+<pre class="example">
+free -m
+</pre>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-right">total</th>
+<th scope="col" class="org-right">used</th>
+<th scope="col" class="org-right">free</th>
+<th scope="col" class="org-right">shared</th>
+<th scope="col" class="org-right">buff/cache</th>
+<th scope="col" class="org-right">available</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Mem</td>
+<td class="org-right">7869</td>
+<td class="org-right">859</td>
+<td class="org-right">6261</td>
+<td class="org-right">3</td>
+<td class="org-right">747</td>
+<td class="org-right">6773</td>
+</tr>
+
+<tr>
+<td class="org-left">Swap</td>
+<td class="org-right">2048</td>
+<td class="org-right">0</td>
+<td class="org-right">2048</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+</tr>
+</tbody>
+</table></li>
+<li><p>
+How much memory is currently available? <code>top,free,/proc/meminfo</code>
+</p>
+<pre class="example">
+6773M
+</pre></li>
+<li><p>
+How many disk read/write requests have been made? <code>/proc/diskstats</code>
+</p>
+<pre class="example">
+cat /proc/diskstats
+
+8  0  sda 1139  433  148122 312  0     0     0      0     0 520    312    0   0 0      0   0     0
+8  16 sdb 103   0    4712   35   2     0     8      12    0 70     56     0   0 0      0   1     8
+8  32 sdc 17949 2499 827194 5304 21834 14325 504136 89556 0 142210 123451 496 6 238608 140 15626 28449
+read requests  = 433 + 0 + 2499;  
+write requests = 0 + 0 + 14325;
+</pre></li>
+<li><p>
+How many context switches has the kernel performed? <code>/proc/stat</code>
+</p>
+<pre class="example">
+grep ctxt  /proc/stat
+31663371
+</pre></li>
+<li><p>
+How many context switches has a process had? <code>/proc/[pid]/status</code>
+</p>
+<pre class="example">
+I choose a process which pid equels 100383. 
+cat /proc/100383/status | grep ctxt
+voluntary_ctxt_switches:        331
+nonvoluntary_ctxt_switches:     7
+So we can get PID 100383 had *338* context switches
+</pre></li>
+
+<li><p>
+How many processes have been created since the system was booted? <code>/proc/stat</code>
+</p>
+<pre class="example">
+cat stat | grep processes
+processes 129854
+</pre></li>
+
+<li><p>
+How many processes are there in the ready queue? <code>/proc/stat</code>
+</p>
+
+<pre class="example">
+cat /proc/loadavg
+0.04 0.06 0.01 1/344 134664
+So there are *344* processes in the ready queue
+</pre></li>
+
+<li><p>
+How many processes are blocked waiting for I/O to complete? <code>/proc/stat</code>
+</p>
+
+<pre class="example">
+cat stat | grep cpu | head -1
+cpu  91918 208 76901 46373253 15067 0 19846 0 0 0
+So *15067* processes are blocked waiting for I/O to complete.
+</pre></li>
+
+<li><p>
+What does the following command do?
+</p>
+<pre class="example">
+cd /proc/`ps | head -2 | tail -1 | cut -f1 -d' '` &amp;&amp; ls -l
+First look at words in single quotation marks:
+Commod 'ps' report a snapshot of the current processes.
+Commod 'head -2' and 'tail -1' get the first process --- bash.
+Commod 'cut -f5 -d' '' get the first fields --- PID of bash
+So we can make it simpler : *cd /​proc​/​[PID of bash]/ &amp;&amp; ls -l*
+The purpose of this command is to enter the /​proc​/​[PID of bash]/ directory and list the detailed contents of the folder.
+</pre></li>
+</ol>
+</div>
+</li>
+
+
+<li><a id="orgf3e73d0"></a>Sum up<br />
+<div class="outline-text-5" id="text-1-2-1-2">
+<p>
+In your <i>email message</i>, please answer the following questions.
+</p>
+<ol class="org-ol">
+<li>How many hours you spent in this section?
+<ul class="org-ul">
+<li>It took me about 12 hours to do this.</li>
+</ul></li>
+<li>What's the major difficulties you met in this section? 
+<ol class="org-ol">
+<li>Not being familiar with many commands is the major difficulty I met.</li>
+</ol></li>
+
+<li>How did you solve (or try solving) them?
+<ul class="org-ul">
+<li>Through Google, related manuals to solve this problem.</li>
+</ul></li>
+<li>Have you learnt anything? Or your time was just wasted?
+<ul class="org-ul">
+<li>I gradually understood 'Everything is a file'.</li>
+</ul></li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+<div id="outline-container-orgdb24f0e" class="outline-4">
+<h4 id="orgdb24f0e"><span class="section-number-4">1.2.2</span> Play with the kernel</h4>
+<div class="outline-text-4" id="text-1-2-2">
+<dl class="org-dl">
+<dt>实验内容</dt><dd><a href="http://cs6.swfu.edu.cn/~wx672/lecture_notes/os/lab.html#sec-2-2">http://cs6.swfu.edu.cn/~wx672/lecture_notes/os/lab.html#sec-2-2</a></dd>
+<dt>实验环境</dt><dd><ul class="org-ul">
+<li>OS version: <code>Linux 5.15.123.1-microsoft-standard-WSL2</code></li>
+<li>Kernel source version: <code>WSL2-Linux-Kernel-linux-msft-wsl-5.15.y</code></li>
+<li>GCC version: <code>gcc version 11.4.0</code></li>
+</ul></dd>
+</dl>
+</div>
+
+<ol class="org-ol">
+<li><a id="org34ffa98"></a>Sum up<br />
+<div class="outline-text-5" id="text-1-2-2-1">
+<p>
+In your email message, please answer the following questions.
+</p>
+<ol class="org-ol">
+<li>How many hours you spent in this section?
+<ul class="org-ul">
+<li>In lab 2 I spent about 6 hours finishing.</li>
+</ul></li>
+<li>What's the major difficulties you met in this section? 
+<ol class="org-ol">
+<li>It's hard to find the following "famous" code.</li>
+</ol></li>
+<li>How did you solve (or try solving) them?
+<ul class="org-ul">
+<li>Google, someone's blog and the 'pahole' command helped me a lot.</li>
+</ul></li>
+<li>Have you learnt anything? Or your time was just wasted?
+<ul class="org-ul">
+<li>I learned the meaning of the 'famous' code, and why they're famous.</li>
+</ul></li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+
+<div id="outline-container-org58de151" class="outline-4">
+<h4 id="org58de151"><span class="section-number-4">1.2.3</span> Hello, kernel Module!</h4>
+<div class="outline-text-4" id="text-1-2-3">
+<dl class="org-dl">
+<dt>实验内容</dt><dd><a href="http://cs6.swfu.edu.cn/~wx672/lecture_notes/os/lab.html#sec-2-3">http://cs6.swfu.edu.cn/~wx672/lecture_notes/os/lab.html#sec-2-3</a></dd>
+<dt>实验环境</dt><dd><ul class="org-ul">
+<li>OS version: <code>Linux 5.15.123.1-microsoft-standard-WSL2</code></li>
+<li>Kernel source version: <code>WSL2-Linux-Kernel-linux-msft-wsl-5.15.y</code></li>
+<li>GCC version: <code>gcc version 11.4.0</code></li>
+</ul></dd>
+</dl>
+</div>
+<ol class="org-ol">
+<li><a id="org40577af"></a>实验步骤<br />
+<div class="outline-text-5" id="text-1-2-3-1">
+<ol class="org-ol">
+<li><p>
+Input command
+</p>
+<pre class="example">
+sudo apt-get dist-upgrade
+sudo apt-get install linux-generic
+sudo apt-get install linux-headers-generic
+mkdir hello-lkm &amp;&amp; cd hello-lkm
+</pre></li>
+<li><p>
+Write code
+</p>
+<pre class="example">
+write a hello-1.c
+write Makefile
+</pre></li>
+<li><p>
+make Makefile
+</p>
+<pre class="example">
+make 
+</pre></li>
+<li><p>
+Install the module into the running kernel
+</p>
+<pre class="example">
+sudo insmod hello-1.ko
+</pre></li>
+</ol>
+</div>
+</li>
+
+<li><a id="org8e83342"></a>Questions<br />
+<div class="outline-text-5" id="text-1-2-3-2">
+<ol class="org-ol">
+<li><p>
+What's a kernel module?
+</p>
+<pre class="example">
+Kernel modules are pieces of code that can be loaded and unloaded into the kernel upon demand. They extend the functionality of the kernel without the need to reboot the system.
+</pre></li>
+
+<li><p>
+How do modules get into the kernel?
+</p>
+<pre class="example">
+In this lab, 'make' command generate file calls hello-1.ko. Than, install the module into the kernel
+sudo insmod hello-1.ko
+</pre></li>
+
+<li><p>
+How do you know a kernel module is loaded?
+</p>
+<pre class="example">
+I can see what modules are already loaded into the kernel by running 'lsmod'.
+lsmod
+</pre>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Module</th>
+<th scope="col" class="org-right">Size</th>
+<th scope="col" class="org-right">Used by</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">hello_1</td>
+<td class="org-right">16384</td>
+<td class="org-right">0</td>
+</tr>
+</tbody>
+</table></li>
+
+<li><p>
+How do you know a module is working properly or not?
+</p>
+<pre class="example">
+By running 'lsmod | grep moduleName'
+lsmod | grep moduleName
+</pre></li>
+
+<li><p>
+How do you unload a module?
+</p>
+<pre class="example">
+By running 'sudo rmmod moduleName'
+sudo rmmod moduleName
+</pre></li>
+
+<li><p>
+in hello-1.c, what does ​_​_init, _​_exit mean? (include/linux/init.h)
+</p>
+<pre class="example">
+The kernel can take _​_init as hint that the function is used only during the initialization phase and free up used memory resources after.
+</pre>
+
+<p>
+:_​_exit sections will be used only if module support is disabled.
+</p></li>
+
+<li><p>
+why printk()? why not printf()?
+</p>
+<pre class="example">
+printf() is a function in the GNU C Library. Kernel Space is not directly accessible to user space. So,  The kernel cannot use printf(). 
+</pre></li>
+</ol>
+</div>
+</li>
+
+<li><a id="org8a22d57"></a>Sum up<br />
+<div class="outline-text-5" id="text-1-2-3-3">
+<p>
+In your email message, please answer the following questions.
+</p>
+<ol class="org-ol">
+<li>How many hours you spent in this section?
+<ul class="org-ul">
+<li>I spent about 7 hours in lab 3.</li>
+</ul></li>
+<li>What's the major difficulties you met in this section? 
+<ol class="org-ol">
+<li>When I enter the command sudo install linux-headers-`uname -r`,  there is an error in my terminal.</li>
+</ol></li>
+
+<li>How did you solve (or try solving) them?
+<ul class="org-ul">
+<li>I searched for this in Stackoverflow. Fortunately, this problem has been solved.</li>
+</ul></li>
+<li>Have you learnt anything? Or your time was just wasted?
+<ul class="org-ul">
+<li>I have learned the knowledge of kernel modules and writing a simple kernel module.</li>
+</ul></li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+
+<div id="outline-container-orgca20c5b" class="outline-4">
+<h4 id="orgca20c5b"><span class="section-number-4">1.2.4</span> System calls</h4>
+<div class="outline-text-4" id="text-1-2-4">
+<dl class="org-dl">
+<dt>实验内容</dt><dd><a href="http://cs6.swfu.edu.cn/~wx672/lecture_notes/os/lab.html#sec-2-4">http://cs6.swfu.edu.cn/~wx672/lecture_notes/os/lab.html#sec-2-4</a></dd>
+<dt>实验环境</dt><dd><ul class="org-ul">
+<li>OS version: <code>Linux 5.15.123.1-microsoft-standard-WSL2</code></li>
+<li>Kernel source version: <code>WSL2-Linux-Kernel-linux-msft-wsl-5.15.y</code></li>
+<li>GCC version: <code>gcc version 9.4.0</code></li>
+</ul></dd>
+</dl>
+</div>
+<ol class="org-ol">
+<li><a id="orgf4aedb7"></a>实验步骤<br />
+<div class="outline-text-5" id="text-1-2-4-1">
+<ol class="org-ol">
+<li><p>
+Download the source code of the latest stable version of the Linux kernel (which is <a href="https://github.com/microsoft/WSL2-Linux-Kernel/tree/linux-msft-wsl-5.15.y">https://github.com/microsoft/WSL2-Linux-Kernel/tree/linux-msft-wsl-5.15.y</a>) to the home folder.
+</p>
+<pre class="example">
+cd /usr/src
+git clone https://github.com/microsoft/WSL2-Linux-Kernel.git
+cd /WSL2-Linux-Kernel-linux-msft-wsl-5.15.y
+</pre></li>
+<li><p>
+Write a basic system call in C and integrate it into the new kernel.
+</p>
+<pre class="example">
+mkdir identity
+</pre>
+
+
+<p>
+Create a C file for the system call.         
+</p>
+
+<pre class="example">
+vim identity/identity.c
+</pre>
+
+
+<p>
+Write the following code in it.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c">#include &lt;linux/kernel.h&gt;
+#include &lt;linux/syscalls.h&gt;
+
+SYSCALL_DEFINE0(identity)
+
+{
+   printk("I am Jihan Jasper Al-rashid.\n");
+   return 0;
+}
+</pre>
+</div>
+
+<p>
+Create a Makefile.
+</p>
+
+<pre class="example">
+vim identity/Makefile
+</pre>
+
+
+<p>
+Write the following code in it.
+</p>
+
+<pre class="example">
+obj-y := identity.o
+</pre>
+
+
+<p>
+Add the home directory of the system call to the main Makefile of the kernel.
+</p>
+
+<pre class="example">
+vim Makefile
+</pre>
+
+
+<p>
+Search for <code>core-y</code>. In the second result, see a series of directories.
+ <code>kernel/ certs/ mm/ fs/ ipc/ security/ crypto/</code> 
+Add the home directory of my system call at the end like the following.
+</p>
+
+<pre class="example">
+kernel/ certs/ mm/ fs/ ipc/ security/ crypto/ identity/
+</pre>
+
+
+<p>
+Add a corresponding function prototype for my system call to the header file of system calls.
+</p>
+
+<pre class="example">
+include/linux/syscalls.h 
+</pre>
+
+
+<p>
+Navigate to the bottom of it and write the following code just above #endif.
+</p>
+
+<pre class="example">
+asmlinkage long sys_identity(void);
+</pre>
+
+
+<p>
+Add my system call to the kernel's system call table.
+</p>
+
+<pre class="example">
+vim arch/x86/entry/syscalls/syscall_64.tbl
+</pre>
+
+
+<p>
+Go to the bottom of the first group (it ends at syscall 447 in linux-msft-wsl-5.15), and add the following line:
+</p>
+
+<pre class="example">
+448   common   identity   sys_identity
+</pre></li>
+<li><p>
+Installation the new kernel and prepare your operating system to boot into it.
+</p>
+
+<p>
+Compile the kernel's source code.
+</p>
+
+<pre class="example">
+make KCONFIG_CONFIG=Microsoft/config-wsl 
+</pre>
+
+
+<p>
+Prepare the installer of the kernel.
+</p>
+
+<pre class="example">
+sudo make modules_install -j4
+</pre>
+
+
+<p>
+Install the kernel.
+</p>
+
+<pre class="example">
+sudo make install -j4
+</pre>
+
+
+<p>
+then wait. When the compilation done, copy the compiled image to somewhere on the Windows filesystem (i.e., outside WSL).
+</p>
+<pre class="example">
+cp arch/x86/boot/bzImage /mnt/c/Users/luoju/bzImage
+</pre>
+
+
+<p>
+Exit WSL and reboot it
+</p></li>
+
+<li><p>
+write a C program to check whether the system call works or not.
+</p>
+<pre class="example">
+vim report.c
+</pre>
+
+
+<div class="org-src-container">
+<pre class="src src-c">#include &lt;linux/kernel.h&gt;
+#include &lt;sys/syscall.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;string.h&gt;
+#include &lt;errno.h&gt;
+
+#define __NR_identity 440
+
+long identity_syscall(void)
+{
+   return syscall(__NR_identity);
+}
+
+int main(int argc, char *argv[])
+{
+   long activity;
+   activity = identity_syscall();
+
+   if(activity &lt; 0)
+   {
+      perror("Sorry, Jasper. Your system call appears to have failed.");
+   }
+
+   else
+   {
+      printf("Congratulations, Jasper! Your system call is functional. Run the command dmesg in the terminal and find out!\n");
+   }
+
+   return 0;
+}
+</pre>
+</div>
+
+<p>
+Compile the C file.
+</p>
+
+<pre class="example">
+gcc -o report report.c
+</pre>
+
+<p>
+Run the C file you just compiled
+</p>
+
+<pre class="example">
+./report
+</pre>
+
+<p>
+it displays the following
+<code>Congratulations, Jasper! Your system call is functional. Run the command dmesg in the terminal and find out!</code>
+Check the last line of the <code>dmesg</code> output.
+</p>
+
+<pre class="example">
+dmesg | tail -1
+</pre>
+
+<p>
+see the following
+<code>[ 4273.313106] I am Jihan Jasper Al-rashid.</code>
+</p></li>
+</ol>
+</div>
+</li>
+
+<li><a id="org99759e2"></a>Sum up<br />
+<div class="outline-text-5" id="text-1-2-4-2">
+<p>
+In your email message, please answer the following questions.
+</p>
+<ol class="org-ol">
+<li>How many hours you spent in this section?
+<ul class="org-ul">
+<li>About 7 or 8 hours</li>
+</ul></li>
+<li>What's the major difficulties you met in this section? 
+<ol class="org-ol">
+<li>When I try to update the bootloader of the operating system with the new kernel by using "sudo update-grub", but Ubuntu on metal while WSL2 is a lightweight virtual machine and doesn't even need it to boot.</li>
+</ol></li>
+<li>How did you solve (or try solving) them?
+<ul class="org-ul">
+<li>I search this question in google. In this page(<a href="https://gist.github.com/cerebrate/d40c89d3fa89594e1b1538b2ce9d2720">https://gist.github.com/cerebrate/d40c89d3fa89594e1b1538b2ce9d2720</a>), I copy the 'bzImage' of the kernel which have been compiled and move it to somewhere on the Windows filesystem. Then create and modify .wslconfig.</li>
+</ul></li>
+<li>Have you learnt anything? Or your time was just wasted?
+<ul class="org-ul">
+<li>I become more clear about 'image' in linux, although still abstract. Also, learned making my syscall.</li>
+</ul></li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org79adf75" class="outline-2">
+<h2 id="org79adf75"><span class="section-number-2">2</span> Process management</h2>
+<div class="outline-text-2" id="text-2">
+<ul class="org-ul">
+<li><a href="http://cs6.swfu.edu.cn/~wx672/lecture_notes/os/lab.html#sec-3">http://cs6.swfu.edu.cn/~wx672/lecture_notes/os/lab.html#sec-3</a></li>
+</ul>
+</div>
+<div id="outline-container-org421e50d" class="outline-3">
+<h3 id="org421e50d"><span class="section-number-3">2.1</span> Process creation</h3>
+<div class="outline-text-3" id="text-2-1">
+<dl class="org-dl">
+<dt>实验内容</dt><dd><a href="http://cs6.swfu.edu.cn/~wx672/lecture_notes/os/lab.html#sec-3-1-1">http://cs6.swfu.edu.cn/~wx672/lecture_notes/os/lab.html#sec-3-1-1</a></dd>
+<dt>实验环境</dt><dd><ul class="org-ul">
+<li>OS version: (<code>Linux 5.15.123.1-microsoft-standard-WSL2</code>)</li>
+<li>Kernel source version: (<code>WSL2-Linux-Kernel-linux-msft-wsl-5.15.y</code>)</li>
+<li>GCC version: (<code>gcc version 11.4.0</code>)</li>
+</ul></dd>
+</dl>
+</div>
+<div id="outline-container-orgb512962" class="outline-4">
+<h4 id="orgb512962"><span class="section-number-4">2.1.1</span> 实验步骤</h4>
+<div class="outline-text-4" id="text-2-1-1">
+<ol class="org-ol">
+<li>Using man command to get a sense of the command;</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org006248d" class="outline-4">
+<h4 id="org006248d"><span class="section-number-4">2.1.2</span> Questions</h4>
+<div class="outline-text-4" id="text-2-1-2">
+<ol class="org-ol">
+<li><p>
+Both exit() and _exit() are used in the program. What's the difference?
+</p>
+<pre class="example">
+_exit() terminates the calling process "immediately". Any open file descriptors belonging to the process are closed.     
+exit() flushes io buffers and removes tempfile.
+</pre></li>
+<li><p>
+Tell me about the following line of code:
+</p>
+
+<p>
+<code>w = waitpid(cpid, &amp;status, WUNTRACED | WCONTINUED);</code>
+</p>
+<pre class="example">
+Parent process wait for state changes in a child of the calling process. Function of waitpid will return  the pid of 
+the child whose state has change, if a child has stopped or a stopped child has been resumed by delivery of SIGCONT.
+The status for traced children which have stopped is provided even if this option is not specified.
+</pre></li>
+<li><p>
+Compile and run the following 4 programs. Tell me what they do? And their differences:
+</p>
+<pre class="example">
+1. To see every process on the system using BSD syntax.
+2. It did the same thing as No.1. But it used execlp function to execute without system().
+3. It used 2 processes to print every process on the system using BSD syntax.
+4. it used child process to execute.
+</pre></li>
+<li><p>
+more on fork() and wait()
+</p>
+
+<p>
+Compile and run this program. Tell me why the output is weird (mixed with the $ prompt)? And fix it with the wait() system call.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">$ ./fork_blp
+
+fork program starting
+This is the parent
+This is the child
+This is the child
+This is the parent
+This is the child
+This is the parent
+This is the child
+This is the child
+This is the child
+This is the child
+</pre>
+</div>
+<pre class="example">
+Parent process created child process. But we don't know who has control over the CPU.
+</pre>
+
+
+<p>
+Fixed code
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c">#include &lt;sys/types.h&gt;
+#include &lt;sys/wait.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;stdio.h&gt;
+int main()
+{
+    pid_t pid;
+    char *message;
+    int n;
+       int status;
+    printf("fork program starting\n");
+    pid = fork();
+    switch(pid)
+    {
+    case -1:
+	perror("fork failed");
+	exit(1);
+    case 0:
+	message = "This is the child";
+	n = 7;
+	break;
+    default:
+	message = "This is the parent";
+	n = 3;
+	       wait(&amp;status);
+	break;
+    }
+    for(; n &gt; 0; n--) {
+	puts(message);
+	sleep(1);
+    }
+
+       /* It's not necessasry to have both parent and child process do wait() though it doesn't hurt.*/
+       // wait(&amp;status);
+
+       exit(0);
+}
+</pre>
+</div></li>
+
+<li>zombies and waitpid()
+
+<ul class="org-ul">
+<li><p>
+Read the NOTES section in the wait manual page (man 2 wait) to get a clear idea about zombie processes. And tell me why zombie is not welcomed.
+</p>
+<pre class="example">
+As long as a zombie is not removed from the system via a wait, it will consume a slot in the kernel process table, 
+and if this table fills, it will not be possible to create further processes.       
+</pre></li>
+<li>At the end of wait manual page (man 2 wait), there is an example program. Play with it, and tell me about <code>WUNTRACED</code>, <code>WCONTINUED</code>, <code>WIFEXITED</code>, <code>WEXITSTATUS</code>, <code>WIFSIGNALED</code>, <code>WTERMSIG</code>, <code>WIFSTOPPED</code>, <code>WSTOPSIG</code>, <code>WIFCONTINUED</code>, <code>pause()</code>.
+<ul class="org-ul">
+<li><p>
+WUNTRACED
+</p>
+<pre class="example">
+return if child has stopped.
+</pre></li>
+<li><p>
+WCONTINUED
+</p>
+<pre class="example">
+return if a stopped child has been resumed by delivery of SIGCONT.
+</pre></li>
+<li><p>
+WIFEXITED
+</p>
+<pre class="example">
+returns true if the child terminated normall
+</pre></li>
+<li><p>
+WEXITSTATUS
+</p>
+<pre class="example">
+returns the exit status of the child.
+</pre></li>
+<li><p>
+WIFSIGNALED
+</p>
+<pre class="example">
+returns true if the child process was terminated by a signal.
+</pre></li>
+<li><p>
+WTERMSIG
+</p>
+<pre class="example">
+returns the number of the signal that caused the child process to terminate.
+</pre></li>
+<li><p>
+WIFSTOPPED
+</p>
+<pre class="example">
+returns true if the child process was stopped by delivery of a signal.
+</pre></li>
+<li><p>
+WSTOPSIG
+</p>
+<pre class="example">
+returns the number of the signal which caused the child to stop.
+</pre></li>
+<li><p>
+WIFCONTINUED
+</p>
+<pre class="example">
+returns true if the child process was resumed by delivery of SIGCONT.
+</pre></li>
+<li><p>
+pause()
+</p>
+<pre class="example">
+causes the calling process to sleep until a signal is delivered.
+</pre></li>
+</ul></li>
+
+<li>Compile and run this small program. This program can leave a zombie process in the system. You can see it with
+<ul class="org-ul">
+<li><p>
+Write a similar program that leaves 5 zombies.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c">#include &lt;sys/wait.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+
+int main(void) {
+    pid_t pids[5];
+    for (int i = 4; i &gt;= 0; --i) {
+	pids[i] = fork();
+	if (pids[i] == 0) {
+	    printf("Child%d\n", i);
+	    _exit(0);
+	}
+    }
+    sleep(60); return 0;
+}
+</pre>
+</div></li>
+
+<li><p>
+Tell me what's the difference between a zombie process and a orphan process?
+</p>
+<pre class="example">
+A child that terminates, but has not been waited  becomes a "zombie".
+Parent process has finished or terminated, though child process remains running itself.
+</pre></li>
+<li><p>
+Read Beginning Linux Programming (last visited: <span class="timestamp-wrapper"><span class="timestamp">[2020-11-20 Fri]</span></span>), Chapter 11, page 503 to learn how to avoid zombies with waitpid() system call. And correct the above program.
+</p>
+<div class="org-src-container">
+<pre class="src src-c">#include &lt;sys/wait.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+
+int main(void) {
+    pid_t pids[5];
+    int status;
+    for (int i = 4; i &gt;= 0; --i) {
+	pids[i] = fork();
+	if (pids[i] == 0) {
+	    printf("Child%d\n", i);
+	    _exit(0);
+	} else {
+	    waitpid(pids[i], &amp;status, WNOHANG);
+	}
+    }
+    return 0;
+}
+</pre>
+</div></li>
+<li><p>
+Tell me the difference between exit() and return.
+</p>
+<pre class="example">
+return returns from the current function.
+exit() terminates the whole process.
+</pre></li>
+</ul></li>
+</ul></li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgf33b832" class="outline-4">
+<h4 id="orgf33b832"><span class="section-number-4">2.1.3</span> Sum up</h4>
+<div class="outline-text-4" id="text-2-1-3">
+<p>
+In your email message, please answer the following questions.
+</p>
+<ol class="org-ol">
+<li>How many hours you spent in this section?
+<ul class="org-ul">
+<li>About 5 hours.</li>
+</ul></li>
+<li>What's the major difficulties you met in this section? 
+<ol class="org-ol">
+<li>Poor knowledge of fork makes it difficult to program.</li>
+</ol></li>
+<li>How did you solve (or try solving) them?
+<ul class="org-ul">
+<li><code>fork</code> manual page</li>
+<li>Wiki of zombie process (<a href="https://en.wikipedia.org/wiki/Zombie_process">https://en.wikipedia.org/wiki/Zombie_process</a>)</li>
+</ul></li>
+<li>Have you learnt anything? Or your time was just wasted?
+<ul class="org-ul">
+<li>Learn how to use fork(), waitpid(), and various options of waitpid.</li>
+</ul></li>
+</ol>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgbd7f077" class="outline-3">
+<h3 id="orgbd7f077"><span class="section-number-3">2.2</span> Thread</h3>
+<div class="outline-text-3" id="text-2-2">
+<dl class="org-dl">
+<dt>实验内容</dt><dd><a href="http://cs6.swfu.edu.cn/~wx672/lecture_notes/os/lab.html#sec-3-2">http://cs6.swfu.edu.cn/~wx672/lecture_notes/os/lab.html#sec-3-2</a></dd>
+<dt>实验环境</dt><dd><ul class="org-ul">
+<li>OS version: (<code>Linux 5.15.123.1-microsoft-standard-WSL2</code>)</li>
+<li>Kernel source version: (<code>WSL2-Linux-Kernel-linux-msft-wsl-5.15.y</code>)</li>
+<li>GCC version: (<code>gcc version 11.4.0</code>)</li>
+</ul></dd>
+</dl>
+</div>
+
+<div id="outline-container-orgfbb8e5e" class="outline-4">
+<h4 id="orgfbb8e5e"><span class="section-number-4">2.2.1</span> Questions</h4>
+<div class="outline-text-4" id="text-2-2-1">
+<ol class="org-ol">
+<li>At the end of pthread_create manual page (man 3 pthread_create), there is an example program. Play with it, and then tell me:
+<ul class="org-ul">
+<li><p>
+What's the tinfo[]?
+</p>
+<pre class="example">
+List of tread infomation.
+</pre></li>
+<li><p>
+What's the res?
+</p>
+<pre class="example">
+Return the value of thread_start.
+</pre></li>
+</ul></li>
+<li>At the end of pthread_attr_init manual page (man 3 pthread_attr_init), there is an example program. Compile and run it.</li>
+<li><p>
+Compile and run this program. Now, remove the pthread_join call, i.e. comment out line 29-32. Compile and run it again for multiple times. Tell me the difference, and why?
+</p>
+<pre class="example">
+In the original code, the two threads will keep running unless there is an interrupt signal. 
+When removing the pthread_join call in the code, the process will return soon without waiting 
+for threads and kill threads which it created.
+</pre></li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orga7f26cd" class="outline-4">
+<h4 id="orga7f26cd"><span class="section-number-4">2.2.2</span> Sum up</h4>
+<div class="outline-text-4" id="text-2-2-2">
+<p>
+In your email message, please answer the following questions.
+</p>
+<ol class="org-ol">
+<li>How many hours you spent in this section?
+<ul class="org-ul">
+<li>About 3 hours.</li>
+</ul></li>
+<li>What's the major difficulties you met in this section? 
+<ol class="org-ol">
+<li>Reading example code is difficulty.</li>
+</ol></li>
+<li>How did you solve (or try solving) them?
+<ul class="org-ul">
+<li>Using Google and relevant manule page.</li>
+</ul></li>
+<li>Have you learnt anything? Or your time was just wasted?
+<ul class="org-ul">
+<li>The konwleage about thread.</li>
+</ul></li>
+</ol>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgd4ee964" class="outline-3">
+<h3 id="orgd4ee964"><span class="section-number-3">2.3</span> IPC</h3>
+<div class="outline-text-3" id="text-2-3">
+<dl class="org-dl">
+<dt>实验内容</dt><dd><a href="http://cs6.swfu.edu.cn/~wx672/lecture_notes/os/lab.html#sec-3-3">http://cs6.swfu.edu.cn/~wx672/lecture_notes/os/lab.html#sec-3-3</a></dd>
+<dt>实验环境</dt><dd><ul class="org-ul">
+<li>OS version: (<code>Linux 5.15.123.1-microsoft-standard-WSL2</code>)</li>
+<li>Kernel source version: (<code>WSL2-Linux-Kernel-linux-msft-wsl-5.15.y</code>)</li>
+<li>GCC version: (<code>gcc version 11.4.0</code>)</li>
+</ul></dd>
+</dl>
+</div>
+<div id="outline-container-org16c683d" class="outline-4">
+<h4 id="org16c683d"><span class="section-number-4">2.3.1</span> Questions</h4>
+<div class="outline-text-4" id="text-2-3-1">
+<ol class="org-ol">
+<li>Signals
+<ul class="org-ul">
+<li><p>
+Now, tell me your understanding about the following function prototype:
+</p>
+<pre class="example">
+void (*signal(int sig, void (*func)(int)))(int)
+signal(...) is a function pointer.
+For using the signal function, we need input a integer 
+and a funtion pointer as arguments.
+</pre></li>
+<li><p>
+Following Beej's Guide to Unix IPC, section 3 to play with signals. And then tell me details about the following code:
+</p>
+
+<p>
+<code>int sigaction(int signum, const struct sigaction *act, struct sigaction *oldact)</code>
+</p>
+<pre class="example">
+"signum" specifies the signal, except SIGKILL and SIGINT...
+A new action is defined at "act" to handle the situation that something traps the signal.
+"oldact" has saved the previous action.
+</pre></li>
+</ul></li>
+<li>Pipe
+<ul class="org-ul">
+<li><p>
+Modify pipe3.c in Beej's Guide to Unix IPC, section 4 to make the child does the wc -l, and the parent does the ls.
+</p>
+<div class="org-src-container">
+<pre class="src src-c">if (!fork()) {
+   // parent 
+   close(1);       /* close normal stdout */
+   dup(pfds[1]);   /* make stdout same as pfds[1] */
+   close(pfds[0]); /* we don't need this */
+   execlp("ls", "ls", NULL);
+} else {
+   // child 
+   close(0);       /* close normal stdin */
+   dup(pfds[0]);   /* make stdin same as pfds[0] */
+   close(pfds[1]); /* we don't need this */
+   execlp("wc", "wc", "-l", NULL);
+}
+</pre>
+</div></li>
+<li><p>
+At the end of pipe manual page (man 2 pipe), there is an example program. Compile it, run it, understand it, and then, modify the program, let parent do read, and child do write.
+</p>
+<div class="org-src-container">
+<pre class="src src-c">if (!cpid) {    
+     // parent
+     close(pipefd[1]);
+     while (read(pipefd[0], &amp;buf, 1) &gt; 0)
+	 write(STDOUT_FILENO, &amp;buf, 1);
+
+     write(STDOUT_FILENO, "\n", 1);
+     close(pipefd[0]);
+     _exit(EXIT_SUCCESS);
+
+ } else {            
+     // child
+     close(pipefd[0]);          
+     write(pipefd[1], argv[1], strlen(argv[1]));
+     close(pipefd[1]);          
+     wait(NULL);                
+     exit(EXIT_SUCCESS);
+ }
+</pre>
+</div></li>
+</ul></li>
+<li>FIFO
+<ul class="org-ul">
+<li><p>
+When you run the example programs (speak and tick), there should be a new file named american_maid appear in your working directory ($PWD). What will happen if you delete this FIFO file while the two programs running? Why?
+</p>
+<pre class="example">
+The speak and tick will continue working.
+When I delete the FIFO file while the two programs running, the file still lie in the file desciptor table. 
+I use lsof to list open files of speak, after removing american_maid.
+</pre>
+
+
+<div class="org-src-container">
+<pre class="src src-c">COMMAND  PID USER   FD   TYPE DEVICE SIZE/OFF  NODE NAME
+s       8744    a  cwd    DIR   8,32     4096 19889 /home/a/.../20211152002_lab7/fifo
+...
+s       8744    a    3w  FIFO   8,32      0t0 19646 /home/a/.../20211152002_lab7/fifo/american_maid (deleted)
+	    #+end_src c
+
+       - Modify the example programs to use mkfifo instead of mknod.
+	 Modifed the example programs:
+	  #+begin_src c
+int  main(int argc, char *argv[])
+{
+   ...
+	char * FIFO_NAME = argv[1];
+   ...
+}
+</pre>
+</div>
+<p>
+than
+</p>
+<pre class="example">
+$ mkfifo a
+$ gcc speakModified.c -o sM &amp; ./sM a 
+$ gcc tickModified.c  -o tM &amp; ./tM a
+</pre></li>
+
+<li><p>
+Extend the example programs, and make it have 3 writers.
+</p>
+<div class="org-src-container">
+<pre class="src src-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;errno.h&gt;
+#include &lt;string.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;sys/stat.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;pthread.h&gt; 
+
+pthread_mutex_t lock; 
+char s[300];
+int num, fd;
+
+#define FIFO_NAME "american_maid"
+
+int cnt = 0;
+void* fun() {
+	pthread_mutex_lock(&amp;lock);
+	int n = ++cnt;
+	pthread_mutex_unlock(&amp;lock); 
+
+	printf("%d \n", n);
+	while(1){
+		gets(s);
+		feof(stdin);
+		num = write(fd, s, strlen(s));
+		printf("%d-th speak: wrote %d bytes\n", n, num);
+	}
+}
+
+int main(void)
+{
+	mknod(FIFO_NAME, S_IFIFO | 0666, 0);
+	printf("waiting for readers...\n");
+	fd = open(FIFO_NAME, O_WRONLY);
+	printf("got a reader--type some stuff\n");
+	pthread_mutex_unlock(&amp;lock); 
+
+	pthread_t pids[3];
+	int number[1];
+	for (int i = 0; i &lt; 3; ++i) {
+		// printf("%d \n", i);
+		number[0] = i;
+		pthread_create(&amp;pids[i], NULL, *fun, NULL);
+	}
+	for (int i = 2; i &gt;= 0; --i) pthread_join(pids[i], NULL);
+	return 0;
+}
+</pre>
+</div></li>
+</ul></li>
+<li>File Locking
+<ul class="org-ul">
+<li><p>
+Tell me whether the locked file, e.g. lockdemo.c can be delete while the programs are running? And why?
+</p>
+<pre class="example">
+The file name won’t be visible in the file system, but our file handle will point to 
+the inode, which still exists.
+refence https://www.baeldung.com/linux/open-file-handle-after-move-delete
+</pre></li>
+</ul></li>
+<li>Message Queues
+<ul class="org-ul">
+<li><p>
+What happens when you're running both in separate windows and you kill one or the other?
+</p>
+<pre class="example">
+When killing kirk, spock will not stop. 
+When killing spock, kirk still be able to write massages. 
+Then we restart spock, the massage will be sent suceessfully.
+</pre></li>
+<li><p>
+Also try running two copies of <code>kirk</code> or two copies of <code>spock</code> to get an idea of what happens when you have two readers or two writers.
+</p>
+<pre class="example">
+spock will accept massages which be sent from two copies of kirk.
+Two copies of spock will compete to accept massages which be sent from kirk.
+</pre></li>
+<li><p>
+Another interesting demonstration is to run kirk, enter a bunch of messages, then run spock and see it retrieve all the messages in one swoop. Just messing around with these toy programs will help you gain an understanding of what is really going on.
+</p>
+<pre class="example">
+In this case, if the size of message exceeds buffer(200B), the massage will be spilted mutil-parts.  
+</pre></li>
+
+<li><p>
+What happens if you <code>ipcrm</code> the queue while it's in use? Why?
+</p>
+<pre class="example">
+If I remove the message queue by msgid, there are some errors(terminal will print "msgrcv: Identifier removed"). 
+I try to send some massage by inputing words in kirk, but the terminal will print "msgsnd: Invalid argument".
+</pre></li>
+<li><p>
+Create a message queue with <code>ipcmk</code> , and use it in your programs.
+</p>
+
+<p>
+To create and get message queue id by using 
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">$ ipcmk -Q
+Message queue id: 6
+</pre>
+</div>
+<p>
+In my programs, the Message queue id is from argv[1].
+</p>
+<div class="org-src-container">
+<pre class="src src-c">int msqid = atoi((char *)argv[1]);
+</pre>
+</div></li>
+</ul></li>
+
+<li>Semaphores
+<ul class="org-ul">
+<li><p>
+Semaphores are used to lock some shared resources to enforce mutual-exclusion. In the demo program semdemo.c, what's locked?
+</p>
+<pre class="example">
+Semaphore value is a locker.If sem_op is negative, its absolute value is subtracted from the semaphore value. 
+If sem_op is positive, the value is added to the semaphore value.
+If the result would become negative, the call blocks till the time semaphore value increases to a level that 
+the calculation would result in non-negative semaphore value.
+</pre></li>
+<li>Draw a flow chart to show how the demo program works.
+<svg aria-roledescription="flowchart-v2" role="graphics-document document" viewBox="-8 -8 266.0859375 818.40625" style="max-width: 100%;" xmlns="http://www.w3.org/2000/svg" width="100%" id="graph-div" height="100%" xmlns:xlink="http://www.w3.org/1999/xlink"><style>@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css");'</style><style>#graph-div{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:12px;fill:#333;}#graph-div .error-icon{fill:hsl(60, 90%, 100%);}#graph-div .error-text{fill:rgb(0, 0, 0);stroke:rgb(0, 0, 0);}#graph-div .edge-thickness-normal{stroke-width:2px;}#graph-div .edge-thickness-thick{stroke-width:3.5px;}#graph-div .edge-pattern-solid{stroke-dasharray:0;}#graph-div .edge-pattern-dashed{stroke-dasharray:3;}#graph-div .edge-pattern-dotted{stroke-dasharray:2;}#graph-div .marker{fill:#0b0b0b;stroke:#0b0b0b;}#graph-div .marker.cross{stroke:#0b0b0b;}#graph-div svg{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:12px;}#graph-div .label{font-family:"trebuchet ms",verdana,arial,sans-serif;color:#333;}#graph-div .cluster-label text{fill:rgb(0, 0, 0);}#graph-div .cluster-label span,#graph-div p{color:rgb(0, 0, 0);}#graph-div .label text,#graph-div span,#graph-div p{fill:#333;color:#333;}#graph-div .node rect,#graph-div .node circle,#graph-div .node ellipse,#graph-div .node polygon,#graph-div .node path{fill:#ECECFE;stroke:#BCBCFB;stroke-width:1px;}#graph-div .flowchart-label text{text-anchor:middle;}#graph-div .node .label{text-align:center;}#graph-div .node.clickable{cursor:pointer;}#graph-div .arrowheadPath{fill:#0b0b0b;}#graph-div .edgePath .path{stroke:#0b0b0b;stroke-width:2.0px;}#graph-div .flowchart-link{stroke:#0b0b0b;fill:none;}#graph-div .edgeLabel{background-color:#E9E9F1;text-align:center;}#graph-div .edgeLabel rect{opacity:0.5;background-color:#E9E9F1;fill:#E9E9F1;}#graph-div .labelBkg{background-color:rgba(233, 233, 241, 0.5);}#graph-div .cluster rect{fill:hsl(60, 90%, 100%);stroke:hsl(60, 50%, 90%);stroke-width:1px;}#graph-div .cluster text{fill:rgb(0, 0, 0);}#graph-div .cluster span,#graph-div p{color:rgb(0, 0, 0);}#graph-div div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:12px;background:hsl(60, 90%, 100%);border:1px solid hsl(60, 50%, 90%);border-radius:2px;pointer-events:none;z-index:100;}#graph-div .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#333;}#graph-div :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}</style><g><marker orient="auto" markerHeight="12" markerWidth="12" markerUnits="userSpaceOnUse" refY="5" refX="6" viewBox="0 0 10 10" class="marker flowchart" id="graph-div_flowchart-pointEnd"><path style="stroke-width: 1; stroke-dasharray: 1, 0;" class="arrowMarkerPath" d="M 0 0 L 10 5 L 0 10 z"></path></marker><marker orient="auto" markerHeight="12" markerWidth="12" markerUnits="userSpaceOnUse" refY="5" refX="4.5" viewBox="0 0 10 10" class="marker flowchart" id="graph-div_flowchart-pointStart"><path style="stroke-width: 1; stroke-dasharray: 1, 0;" class="arrowMarkerPath" d="M 0 5 L 10 10 L 10 0 z"></path></marker><marker orient="auto" markerHeight="11" markerWidth="11" markerUnits="userSpaceOnUse" refY="5" refX="11" viewBox="0 0 10 10" class="marker flowchart" id="graph-div_flowchart-circleEnd"><circle style="stroke-width: 1; stroke-dasharray: 1, 0;" class="arrowMarkerPath" r="5" cy="5" cx="5"></circle></marker><marker orient="auto" markerHeight="11" markerWidth="11" markerUnits="userSpaceOnUse" refY="5" refX="-1" viewBox="0 0 10 10" class="marker flowchart" id="graph-div_flowchart-circleStart"><circle style="stroke-width: 1; stroke-dasharray: 1, 0;" class="arrowMarkerPath" r="5" cy="5" cx="5"></circle></marker><marker orient="auto" markerHeight="11" markerWidth="11" markerUnits="userSpaceOnUse" refY="5.2" refX="12" viewBox="0 0 11 11" class="marker cross flowchart" id="graph-div_flowchart-crossEnd"><path style="stroke-width: 2; stroke-dasharray: 1, 0;" class="arrowMarkerPath" d="M 1,1 l 9,9 M 10,1 l -9,9"></path></marker><marker orient="auto" markerHeight="11" markerWidth="11" markerUnits="userSpaceOnUse" refY="5.2" refX="-1" viewBox="0 0 11 11" class="marker cross flowchart" id="graph-div_flowchart-crossStart"><path style="stroke-width: 2; stroke-dasharray: 1, 0;" class="arrowMarkerPath" d="M 1,1 l 9,9 M 10,1 l -9,9"></path></marker><g class="root"><g class="clusters"></g><g class="edgePaths"><path marker-end="url(#graph-div_flowchart-pointEnd)" style="fill:none;" class="edge-thickness-normal edge-pattern-solid flowchart-link LS-A LE-B" id="L-A-B-0" d="M94.8359375,33L94.8359375,38.666666666666664C94.8359375,44.333333333333336,94.8359375,55.666666666666664,94.8359375,66.11666666666666C94.8359375,76.56666666666666,94.8359375,86.13333333333333,94.8359375,90.91666666666667L94.8359375,95.7"></path><path marker-end="url(#graph-div_flowchart-pointEnd)" style="fill:none;" class="edge-thickness-normal edge-pattern-solid flowchart-link LS-B LE-C" id="L-B-C-0" d="M94.8359375,188L94.8359375,193.66666666666666C94.8359375,199.33333333333334,94.8359375,210.66666666666666,94.90647024521279,221.20009275301473C94.97700299042555,231.7335188393628,95.1180684808511,241.46703767872557,95.18860122606388,246.333797098407L95.25913397127664,251.20055651808838"></path><path marker-end="url(#graph-div_flowchart-pointEnd)" style="fill:none;" class="edge-thickness-normal edge-pattern-solid flowchart-link LS-C LE-D" id="L-C-D-0" d="M65.81186848902048,387.38218098902047L59.56067165751707,397.8861924908504C53.309474826013656,408.39020399268037,40.80708116300683,429.39822699634016,34.555884331503414,448.31890516483674C28.3046875,467.2395833333333,28.3046875,484.0729166666667,28.3046875,499.40625C28.3046875,514.7395833333334,28.3046875,528.5729166666666,34.23505168281986,539.1887489673328C40.165415865639716,549.8045812679989,52.02614423127943,557.2029125359977,57.95650841409929,560.9020781699971L63.88687259691914,564.6012438039966"></path><path marker-end="url(#graph-div_flowchart-pointEnd)" style="fill:none;" class="edge-thickness-normal edge-pattern-solid flowchart-link LS-C LE-E" id="L-C-E-0" d="M124.86000651097952,387.38218098902047L130.94453667581627,397.8861924908504C137.02906684065303,408.39020399268037,149.1981271703265,429.39822699634016,155.28265733516324,444.6855718315034C161.3671875,459.97291666666666,161.3671875,469.5395833333334,161.3671875,474.3229166666667L161.3671875,479.10625"></path><path marker-end="url(#graph-div_flowchart-pointEnd)" style="fill:none;" class="edge-thickness-normal edge-pattern-solid flowchart-link LS-E LE-D" id="L-E-D-0" d="M161.3671875,517.40625L161.3671875,521.5729166666666C161.3671875,525.7395833333334,161.3671875,534.0729166666666,155.43682331718014,541.9387489673328C149.50645913436028,549.8045812679989,137.64573076872057,557.2029125359977,131.7153665859007,560.9020781699971L125.78500240308085,564.6012438039966"></path><path marker-end="url(#graph-div_flowchart-pointEnd)" style="fill:none;" class="edge-thickness-normal edge-pattern-solid flowchart-link LS-D LE-H" id="L-D-H-0" d="M94.8359375,600.40625L94.8359375,606.0729166666666C94.8359375,611.7395833333334,94.8359375,623.0729166666666,94.8359375,633.5229166666667C94.8359375,643.9729166666667,94.8359375,653.5395833333333,94.8359375,658.3229166666666L94.8359375,663.10625"></path><path marker-end="url(#graph-div_flowchart-pointEnd)" style="fill:none;" class="edge-thickness-normal edge-pattern-solid flowchart-link LS-H LE-G" id="L-H-G-0" d="M94.8359375,701.40625L94.8359375,707.0729166666666C94.8359375,712.7395833333334,94.8359375,724.0729166666666,94.8359375,734.5229166666667C94.8359375,744.9729166666666,94.8359375,754.5395833333333,94.8359375,759.3229166666666L94.8359375,764.10625"></path></g><g class="edgeLabels"><g transform="translate(94.8359375, 67)" class="edgeLabel"><g transform="translate(-84.3828125, -9)" class="label"><foreignObject height="18" width="168.765625"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="edgeLabel">Create and initialize semaphore</span></div></foreignObject></g></g><g transform="translate(94.8359375, 222)" class="edgeLabel"><g transform="translate(-35.6875, -9)" class="label"><foreignObject height="18" width="71.375"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="edgeLabel">try to get lock</span></div></foreignObject></g></g><g transform="translate(28.3046875, 500.90625)" class="edgeLabel"><g transform="translate(-9.34375, -9)" class="label"><foreignObject height="18" width="18.6875"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="edgeLabel">yes</span></div></foreignObject></g></g><g transform="translate(161.3671875, 450.40625)" class="edgeLabel"><g transform="translate(-6.6796875, -9)" class="label"><foreignObject height="18" width="13.359375"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="edgeLabel">no</span></div></foreignObject></g></g><g class="edgeLabel"><g transform="translate(0, 0)" class="label"><foreignObject height="0" width="0"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="edgeLabel"></span></div></foreignObject></g></g><g transform="translate(94.8359375, 634.40625)" class="edgeLabel"><g transform="translate(-30.6875, -9)" class="label"><foreignObject height="18" width="61.375"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="edgeLabel">get the lock</span></div></foreignObject></g></g><g transform="translate(94.8359375, 735.40625)" class="edgeLabel"><g transform="translate(-42.0234375, -9)" class="label"><foreignObject height="18" width="84.046875"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="edgeLabel">release the lock</span></div></foreignObject></g></g></g><g class="nodes"><g transform="translate(94.8359375, 16.5)" id="flowchart-A-14" class="node default default flowchart-label"><rect height="33" width="38.34375" y="-16.5" x="-19.171875" ry="5" rx="5" style="" class="basic label-container"></rect><g transform="translate(-11.671875, -9)" style="" class="label"><rect></rect><foreignObject height="18" width="23.34375"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel">start</span></div></foreignObject></g></g><g transform="translate(94.8359375, 144.5)" id="flowchart-B-15" class="node default default flowchart-label"><rect height="87" width="158.046875" y="-43.5" x="-79.0234375" ry="0" rx="0" style="" class="basic label-container"></rect><g transform="translate(-71.5234375, -36)" style="" class="label"><rect></rect><foreignObject height="72" width="143.046875"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel">struct sembuf sb;<br/>    sb.sem_num = 0;<br/>	sb.sem_op = -1;  <br/>	sb.sem_flg = SEM_UNDO;</span></div></foreignObject></g></g><g transform="translate(94.8359375, 336.203125)" id="flowchart-C-17" class="node default default flowchart-label"><polygon style="" transform="translate(-80.203125,80.203125)" class="label-container" points="80.203125,0 160.40625,-80.203125 80.203125,-160.40625 0,-80.203125"></polygon><g transform="translate(-56.203125, -9)" style="" class="label"><rect></rect><foreignObject height="18" width="112.40625"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel">semaphore  value &gt; 0</span></div></foreignObject></g></g><g transform="translate(94.8359375, 583.90625)" id="flowchart-D-19" class="node default default flowchart-label"><rect height="33" width="189.671875" y="-16.5" x="-94.8359375" ry="0" rx="0" style="" class="basic label-container"></rect><g transform="translate(-87.3359375, -9)" style="" class="label"><rect></rect><foreignObject height="18" width="174.671875"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel">semaphore  value -= |sb.sem_op|</span></div></foreignObject></g></g><g transform="translate(161.3671875, 500.90625)" id="flowchart-E-21" class="node default default flowchart-label"><rect height="33" width="177.4375" y="-16.5" x="-88.71875" ry="0" rx="0" style="" class="basic label-container"></rect><g transform="translate(-81.21875, -9)" style="" class="label"><rect></rect><foreignObject height="18" width="162.4375"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel">wait until semaphore value &gt; 0</span></div></foreignObject></g></g><g transform="translate(94.8359375, 684.90625)" id="flowchart-H-25" class="node default default flowchart-label"><rect height="33" width="87.046875" y="-16.5" x="-43.5234375" ry="0" rx="0" style="" class="basic label-container"></rect><g transform="translate(-36.0234375, -9)" style="" class="label"><rect></rect><foreignObject height="18" width="72.046875"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel">do something</span></div></foreignObject></g></g><g transform="translate(94.8359375, 785.90625)" id="flowchart-G-27" class="node default default flowchart-label"><rect height="33" width="186.453125" y="-16.5" x="-93.2265625" ry="0" rx="0" style="" class="basic label-container"></rect><g transform="translate(-85.7265625, -9)" style="" class="label"><rect></rect><foreignObject height="18" width="171.453125"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel">semaphore  value += sb.sem_op</span></div></foreignObject></g></g></g></g></g></svg>
+</li>
+</ul></li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org0bc61a9" class="outline-4">
+<h4 id="org0bc61a9"><span class="section-number-4">2.3.2</span> Sum up</h4>
+<div class="outline-text-4" id="text-2-3-2">
+<p>
+In your email message, please answer the following questions.
+</p>
+<ol class="org-ol">
+<li>How many hours you spent in this section?
+<ul class="org-ul">
+<li>About 12 hours.</li>
+</ul></li>
+<li>What's the major difficulties you met in this section? 
+<ol class="org-ol">
+<li>In the task of 3 writers, it's difficult for me to code multithreading program.</li>
+<li>Reading code and relevant information is hard.</li>
+</ol></li>
+<li>How did you solve (or try solving) them?
+<ul class="org-ul">
+<li>Conduct a search on Google and enhance my understanding of multithreading programming by studying examples of code. Reading slowly and understanding each function is my best solution. I have to say, Google has been incredibly helpful to me. It’s the perfect tool for my needs.</li>
+</ul></li>
+<li>Have you learnt anything? Or your time was just wasted?
+<ul class="org-ul">
+<li>I establish preliminary understanding of IPC and know more clearly about relationship of c program and linux.</li>
+</ul></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+<div id="outline-container-orgf4669ff" class="outline-2">
+<h2 id="orgf4669ff"><span class="section-number-2">3</span> Memory management</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li><a href="http://cs6.swfu.edu.cn/~wx672/lecture_notes/os/lab.html#sec-4">http://cs6.swfu.edu.cn/~wx672/lecture_notes/os/lab.html#sec-4</a></li>
+</ul>
+</div>
+<div id="outline-container-org56b7eae" class="outline-3">
+<h3 id="org56b7eae"><span class="section-number-3">3.1</span> Basic commands</h3>
+<div class="outline-text-3" id="text-3-1">
+<dl class="org-dl">
+<dt>实验内容</dt><dd><a href="http://cs6.swfu.edu.cn/~wx672/lecture_notes/os/lab.html#sec-4-1">http://cs6.swfu.edu.cn/~wx672/lecture_notes/os/lab.html#sec-4-1</a></dd>
+<dt>实验环境</dt><dd><ul class="org-ul">
+<li>OS version: (<code>Linux 5.15.123.1-microsoft-standard-WSL2</code>)</li>
+<li>Kernel source version: (<code>WSL2-Linux-Kernel-linux-msft-wsl-5.15.y</code>)</li>
+<li>GCC version: (<code>gcc version 11.4.0</code>)</li>
+</ul></dd>
+</dl>
+</div>
+<div id="outline-container-orgfbbafe0" class="outline-4">
+<h4 id="orgfbbafe0"><span class="section-number-4">3.1.1</span> Questions</h4>
+<div class="outline-text-4" id="text-3-1-1">
+<ol class="org-ol">
+<li><p>
+If you exam its size with ls -l, you should get something similar to the following line
+</p>
+
+<p>
+<code>-rwxr-xr-x 1 wx672 wx672  6627 Oct 18 18:05 a.out</code>
+What does the 6627 mean?
+</p>
+<pre class="example">
+this means size of a.out is 6627 byte
+</pre></li>
+<li><p>
+Then, use size to see the size of its text, data, and bss segments.
+</p>
+
+<p>
+<code>size a.out</code>
+</p>
+
+<p>
+The output should be something like
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">text   data   bss        dec         hex    filename
+1200   520    1024032    1025752     fa6d8      a.out
+</pre>
+</div>
+<p>
+What do the 1200, 520, 1024032, and 1025752 mean?
+</p>
+<pre class="example">
+the size of the text segment is 1200 bytes.
+the size of the data segment is 520 bytes.
+the size of the block started by symbol segmen is 1024032 bytes.
+the sum of the "text", "data", and "bss" columns in decimal is 1025752 bytes.
+</pre></li>
+</ol>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgfc6d8ed" class="outline-3">
+<h3 id="orgfc6d8ed"><span class="section-number-3">3.2</span> Shared Memory Segments</h3>
+<div class="outline-text-3" id="text-3-2">
+<dl class="org-dl">
+<dt>实验内容</dt><dd><a href="http://cs6.swfu.edu.cn/~wx672/lecture_notes/os/lab.html#sec-4-2">http://cs6.swfu.edu.cn/~wx672/lecture_notes/os/lab.html#sec-4-2</a></dd>
+<dt>实验环境</dt><dd><ul class="org-ul">
+<li>OS version: (<code>Linux 5.15.123.1-microsoft-standard-WSL2</code>)</li>
+<li>Kernel source version: (<code>WSL2-Linux-Kernel-linux-msft-wsl-5.15.y</code>)</li>
+<li>GCC version: (<code>gcc version 11.4.0</code>)</li>
+</ul></dd>
+</dl>
+</div>
+<div id="outline-container-org990ad49" class="outline-4">
+<h4 id="org990ad49"><span class="section-number-4">3.2.1</span> 实验步骤</h4>
+<div class="outline-text-4" id="text-3-2-1">
+<ol class="org-ol">
+<li><p>
+Use <code>ipcrm</code> to remove the segment you just created while running the example code.
+Add some c program sentence in <code>shmdemo.c</code> 
+</p>
+<div class="org-src-container">
+<pre class="src src-c">printf("%d", shmid);
+fflush(stdout);
+sleep(10);
+</pre>
+</div>
+<p>
+When running the example code, input 
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">ipcrm -m shmid
+</pre>
+</div>
+<p>
+The terminal will print
+</p>
+<pre class="example">
+shmat: Invalid argument
+</pre>
+
+<p>
+And specific share memory will fail.
+</p></li>
+<li><p>
+Add semaphore mechanism into the sample program ( <code>shmdemo.c</code> ) to enforce mutual-exclusive access to the shared data area. 
+</p>
+
+<p>
+Here’s the code for <code>shmdemo_semaphore.c</code>
+</p>
+<div class="org-src-container">
+<pre class="src src-c">...
+int initsem(key_t key, int nsems);
+int main(int argc, char *argv[])
+{
+	...
+	if ((semid = initsem(key, 1)) == -1) {
+		perror("initsem");
+		exit(1);
+	}
+
+	if (semop(semid, &amp;sb, 1) == -1) {
+		perror("semop");
+		exit(1);
+	}
+
+	int shmid4shdemo;
+	char *data;
+
+	if (argc &gt; 2) {
+		fprintf(stderr, "usage: shmdemo [data_to_write]\n");
+		exit(1);
+	}
+
+	if ((shmid4shdemo = shmget(key, SHM_SIZE, 0644 | IPC_CREAT)) == -1) {
+		perror("shmget");
+		exit(1);
+	}
+
+	data = shmat(shmid4shdemo, (void *)0, 0);
+
+	if (data == (void *)(-1)) {
+		perror("shmat");
+		exit(1);
+	}
+	if (argc == 2) {
+		printf("writing to segment: \"%s\"\n", argv[1]);
+		strncpy(data, argv[1], SHM_SIZE);
+		data[SHM_SIZE-1] = '\0';
+	} else
+		printf("segment contains: \"%s\"\n", data);
+
+	if (shmdt(data) == -1) {
+		perror("shmdt");
+		exit(1);
+	}
+
+	sleep(10);
+
+	sb.sem_op = 1; /* free resource */
+
+	if (semop(semid, &amp;sb, 1) == -1) {
+		perror("semop");
+		exit(1);
+	}
+
+	return 0;
+}
+</pre>
+</div></li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-orga02622c" class="outline-3">
+<h3 id="orga02622c"><span class="section-number-3">3.3</span> Memory Mapped Files</h3>
+<div class="outline-text-3" id="text-3-3">
+<dl class="org-dl">
+<dt>实验内容</dt><dd><a href="http://cs6.swfu.edu.cn/~wx672/lecture_notes/os/lab.html#sec-4-3">http://cs6.swfu.edu.cn/~wx672/lecture_notes/os/lab.html#sec-4-3</a></dd>
+<dt>实验环境</dt><dd><ul class="org-ul">
+<li>OS version: (<code>Linux 5.15.123.1-microsoft-standard-WSL2</code>)</li>
+<li>Kernel source version: (<code>WSL2-Linux-Kernel-linux-msft-wsl-5.15.y</code>)</li>
+<li>GCC version: (<code>gcc version 11.4.0</code>)</li>
+</ul></dd>
+</dl>
+</div>
+<div id="outline-container-orge6d4f6a" class="outline-4">
+<h4 id="orge6d4f6a"><span class="section-number-4">3.3.1</span> 实验步骤</h4>
+<div class="outline-text-4" id="text-3-3-1">
+<ol class="org-ol">
+<li><p>
+Write a small program to find out the page size of your Linux PC.
+</p>
+<div class="org-src-container">
+<pre class="src src-c">#include &lt;stdio.h&gt;
+#include &lt;unistd.h&gt;
+
+void main()
+{
+    printf("Page size (sysconf) %ld\n", sysconf(_SC_PAGESIZE));
+    printf("Page size (getpagesize) %d\n", getpagesize());
+    return ;
+}
+</pre>
+</div></li>
+<li><p>
+Add semaphore mechanism into the sample program (mmapdemo.c) to enforce mutual-exclusive access to the shared data area.      
+</p>
+
+<p>
+Here’s the code for <code>mmapdemo.c</code>
+</p>
+<div class="org-src-container">
+<pre class="src src-c">...
+int main(){
+  ...
+  struct sembuf sb = {.sem_num = 0, .sem_op = -1, .sem_flg = SEM_UNDO};
+  key = ftok("mmapdemo.c", 'J');
+  semid = initsem(key, 1);
+  semop(semid, &amp;sb, 1);
+  fd = open("mmapdemo.c", O_RDONLY);
+  ...
+  data = mmap((void*)0, sbuf.st_size, PROT_READ, MAP_SHARED, fd, 0)
+  sb.sem_op = 1; 
+  semop(semid, &amp;sb, 1);
+}
+</pre>
+</div></li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgc608140" class="outline-4">
+<h4 id="orgc608140"><span class="section-number-4">3.3.2</span> Sum up</h4>
+<div class="outline-text-4" id="text-3-3-2">
+<p>
+In your email message, please answer the following questions.
+</p>
+<ol class="org-ol">
+<li>How many hours you spent in this section?
+<ul class="org-ul">
+<li>3 hours.</li>
+</ul></li>
+<li>What's the major difficulties you met in this section? 
+<ol class="org-ol">
+<li>Engilsh is major difficulty.</li>
+</ol></li>
+<li>How did you solve (or try solving) them?
+<ul class="org-ul">
+<li>I tried my best to read and comprehend it.</li>
+</ul></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org32b51f4" class="outline-2">
+<h2 id="org32b51f4"><span class="section-number-2">4</span> File system</h2>
+<div class="outline-text-2" id="text-4">
+<ul class="org-ul">
+<li><b>实验内容</b> <a href="http://cs6.swfu.edu.cn/~wx672/lecture_notes/os/lab.html#sec-5">http://cs6.swfu.edu.cn/~wx672/lecture_notes/os/lab.html#sec-5</a></li>
+<li><b>实验环境</b> 
+<ul class="org-ul">
+<li>OS version: (<code>Linux 5.15.123.1-microsoft-standard-WSL2</code>)</li>
+<li>Kernel source version: (<code>WSL2-Linux-Kernel-linux-msft-wsl-5.15.y</code>)</li>
+<li>GCC version: (<code>gcc version 11.4.0</code>)</li>
+</ul></li>
+</ul>
+</div>
+<div id="outline-container-org3706829" class="outline-3">
+<h3 id="org3706829"><span class="section-number-3">4.1</span> 实验步骤</h3>
+<div class="outline-text-3" id="text-4-1">
+<ol class="org-ol">
+<li><p>
+Create a initialized file
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">dd if=/dev/zero of=fs.img bs=1k count=10000
+</pre>
+</div></li>
+<li><p>
+Creating an ext2 file system
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">mkfs.ext2 my.img
+</pre>
+</div></li>
+<li><p>
+Creating a directory on where the img mount
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">mkdir mymount
+</pre>
+</div></li>
+<li><p>
+Mount the newly created file system onto <code>/mymount</code> directory
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">sudo mount my.img mymount/
+</pre>
+</div></li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org8ab216e" class="outline-3">
+<h3 id="org8ab216e"><span class="section-number-3">4.2</span> Questions</h3>
+<div class="outline-text-3" id="text-4-2">
+<ol class="org-ol">
+<li><p>
+Plug your USB disk into your PC's USB port, and check what file system it is and which directory it's mounted on?
+</p>
+
+<p>
+I mount usb disk on <code>/mnt/luo/</code> 
+</p>
+<pre class="example">
+sudo mount -t drvfs D: /mnt/luo
+</pre>
+
+<p>
+Using <code>df</code> command to check
+</p>
+<pre class="example">
+$ df -Th 
+Filesystem Type Size  Used  Avail  Use%  Mounted on
+...
+D:         9p   30G   837M  29G    3%    /mnt/luo
+</pre></li>
+<li><p>
+After you do <code>cat hello</code> at the command line, you will see on the screen the content of file <code>hello</code>, in our case it is <code>helloworld</code> . Now give me a detailed picture about what is happened in the OS from <code>cat hello</code> to <code>helloworld</code> is shown on the screen.
+</p>
+
+<p>
+In my new file system, the block size is <code>4k (0x1000)</code> and the inode size is <code>256 (0x0100)</code> byte.
+</p>
+
+
+<div class="figure">
+<p>
+	<svg aria-roledescription="classDiagram" role="graphics-document document" viewBox="0 0 566.227294921875 765" style="max-width: 100%;" xmlns="http://www.w3.org/2000/svg" width="100%" id="graph-div" height="100%" xmlns:xlink="http://www.w3.org/1999/xlink"><style>@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css");'</style><style>#graph-div{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:12px;fill:#333;}#graph-div .error-icon{fill:hsl(60, 90%, 100%);}#graph-div .error-text{fill:rgb(0, 0, 0);stroke:rgb(0, 0, 0);}#graph-div .edge-thickness-normal{stroke-width:2px;}#graph-div .edge-thickness-thick{stroke-width:3.5px;}#graph-div .edge-pattern-solid{stroke-dasharray:0;}#graph-div .edge-pattern-dashed{stroke-dasharray:3;}#graph-div .edge-pattern-dotted{stroke-dasharray:2;}#graph-div .marker{fill:#0b0b0b;stroke:#0b0b0b;}#graph-div .marker.cross{stroke:#0b0b0b;}#graph-div svg{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:12px;}#graph-div g.classGroup text{fill:#BCBCFB;stroke:none;font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:10px;}#graph-div g.classGroup text .title{font-weight:bolder;}#graph-div .nodeLabel,#graph-div .edgeLabel{color:#333;}#graph-div .edgeLabel .label rect{fill:#ECECFE;}#graph-div .label text{fill:#333;}#graph-div .edgeLabel .label span{background:#ECECFE;}#graph-div .classTitle{font-weight:bolder;}#graph-div .node rect,#graph-div .node circle,#graph-div .node ellipse,#graph-div .node polygon,#graph-div .node path{fill:#ECECFE;stroke:#BCBCFB;stroke-width:1px;}#graph-div .divider{stroke:#BCBCFB;stroke-width:1;}#graph-div g.clickable{cursor:pointer;}#graph-div g.classGroup rect{fill:#ECECFE;stroke:#BCBCFB;}#graph-div g.classGroup line{stroke:#BCBCFB;stroke-width:1;}#graph-div .classLabel .box{stroke:none;stroke-width:0;fill:#ECECFE;opacity:0.5;}#graph-div .classLabel .label{fill:#BCBCFB;font-size:10px;}#graph-div .relation{stroke:#0b0b0b;stroke-width:1;fill:none;}#graph-div .dashed-line{stroke-dasharray:3;}#graph-div .dotted-line{stroke-dasharray:1 2;}#graph-div #compositionStart,#graph-div .composition{fill:#0b0b0b!important;stroke:#0b0b0b!important;stroke-width:1;}#graph-div #compositionEnd,#graph-div .composition{fill:#0b0b0b!important;stroke:#0b0b0b!important;stroke-width:1;}#graph-div #dependencyStart,#graph-div .dependency{fill:#0b0b0b!important;stroke:#0b0b0b!important;stroke-width:1;}#graph-div #dependencyStart,#graph-div .dependency{fill:#0b0b0b!important;stroke:#0b0b0b!important;stroke-width:1;}#graph-div #extensionStart,#graph-div .extension{fill:transparent!important;stroke:#0b0b0b!important;stroke-width:1;}#graph-div #extensionEnd,#graph-div .extension{fill:transparent!important;stroke:#0b0b0b!important;stroke-width:1;}#graph-div #aggregationStart,#graph-div .aggregation{fill:transparent!important;stroke:#0b0b0b!important;stroke-width:1;}#graph-div #aggregationEnd,#graph-div .aggregation{fill:transparent!important;stroke:#0b0b0b!important;stroke-width:1;}#graph-div #lollipopStart,#graph-div .lollipop{fill:#ECECFE!important;stroke:#0b0b0b!important;stroke-width:1;}#graph-div #lollipopEnd,#graph-div .lollipop{fill:#ECECFE!important;stroke:#0b0b0b!important;stroke-width:1;}#graph-div .edgeTerminals{font-size:11px;}#graph-div .classTitleText{text-anchor:middle;font-size:18px;fill:#333;}#graph-div :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}</style><g><defs><marker orient="auto" markerHeight="240" markerWidth="190" refY="7" refX="18" class="marker aggregation classDiagram" id="graph-div_classDiagram-aggregationStart"><path d="M 18,7 L9,13 L1,7 L9,1 Z"></path></marker></defs><defs><marker orient="auto" markerHeight="28" markerWidth="20" refY="7" refX="1" class="marker aggregation classDiagram" id="graph-div_classDiagram-aggregationEnd"><path d="M 18,7 L9,13 L1,7 L9,1 Z"></path></marker></defs><defs><marker orient="auto" markerHeight="240" markerWidth="190" refY="7" refX="18" class="marker extension classDiagram" id="graph-div_classDiagram-extensionStart"><path d="M 1,7 L18,13 V 1 Z"></path></marker></defs><defs><marker orient="auto" markerHeight="28" markerWidth="20" refY="7" refX="1" class="marker extension classDiagram" id="graph-div_classDiagram-extensionEnd"><path d="M 1,1 V 13 L18,7 Z"></path></marker></defs><defs><marker orient="auto" markerHeight="240" markerWidth="190" refY="7" refX="18" class="marker composition classDiagram" id="graph-div_classDiagram-compositionStart"><path d="M 18,7 L9,13 L1,7 L9,1 Z"></path></marker></defs><defs><marker orient="auto" markerHeight="28" markerWidth="20" refY="7" refX="1" class="marker composition classDiagram" id="graph-div_classDiagram-compositionEnd"><path d="M 18,7 L9,13 L1,7 L9,1 Z"></path></marker></defs><defs><marker orient="auto" markerHeight="240" markerWidth="190" refY="7" refX="6" class="marker dependency classDiagram" id="graph-div_classDiagram-dependencyStart"><path d="M 5,7 L9,13 L1,7 L9,1 Z"></path></marker></defs><defs><marker orient="auto" markerHeight="28" markerWidth="20" refY="7" refX="13" class="marker dependency classDiagram" id="graph-div_classDiagram-dependencyEnd"><path d="M 18,7 L9,13 L14,7 L9,1 Z"></path></marker></defs><defs><marker orient="auto" markerHeight="240" markerWidth="190" refY="7" refX="13" class="marker lollipop classDiagram" id="graph-div_classDiagram-lollipopStart"><circle r="6" cy="7" cx="7" fill="transparent" stroke="black"></circle></marker></defs><defs><marker orient="auto" markerHeight="240" markerWidth="190" refY="7" refX="1" class="marker lollipop classDiagram" id="graph-div_classDiagram-lollipopEnd"><circle r="6" cy="7" cx="7" fill="transparent" stroke="black"></circle></marker></defs><g class="root"><g class="clusters"></g><g class="edgePaths"><path marker-end="url(#graph-div_classDiagram-extensionEnd)" style="fill:none" class="edge-pattern-solid relation" data-edge="true" id="id_root_Inode_root_First_Data_Block_1" d="M283.11363220214844,131L283.11363220214844,135.16666666666666C283.11363220214844,139.33333333333334,283.11363220214844,147.66666666666666,283.11363220214844,153C283.11363220214844,158.33333333333334,283.11363220214844,160.66666666666666,283.11363220214844,161.83333333333334L283.11363220214844,163"></path><path marker-end="url(#graph-div_classDiagram-extensionEnd)" style="fill:none" class="edge-pattern-solid relation" data-edge="true" id="id_root_First_Data_Block_-_2" d="M211.59090423583984,240.99541888506891L185.9971548716227,248.32951573755744C160.4034055074056,255.66361259004597,109.21590677897136,270.331806295023,83.62215741475423,278.83256981417816C58.02840805053711,287.3333333333333,58.02840805053711,289.6666666666667,58.02840805053711,290.8333333333333L58.02840805053711,292"></path><path marker-end="url(#graph-div_classDiagram-extensionEnd)" style="fill:none" class="edge-pattern-solid relation" data-edge="true" id="id_root_First_Data_Block_--_3" d="M237.166002465773,260L232.3192060800794,264.1666666666667C227.47240969438576,268.3333333333333,217.77881692299854,276.6666666666667,212.93202053730496,282C208.08522415161133,287.3333333333333,208.08522415161133,289.6666666666667,208.08522415161133,290.8333333333333L208.08522415161133,292"></path><path marker-end="url(#graph-div_classDiagram-extensionEnd)" style="fill:none" class="edge-pattern-solid relation" data-edge="true" id="id_root_First_Data_Block_hello_4" d="M329.0612619385239,260L333.9080583242175,264.1666666666667C338.7548547099111,268.3333333333333,348.4484474812983,276.6666666666667,353.29524386699194,282C358.14204025268555,287.3333333333333,358.14204025268555,289.6666666666667,358.14204025268555,290.8333333333333L358.14204025268555,292"></path><path marker-end="url(#graph-div_classDiagram-extensionEnd)" style="fill:none" class="edge-pattern-solid relation" data-edge="true" id="id_root_First_Data_Block_lost_found_5" d="M354.63636016845703,240.99541888506891L380.23010953267413,248.32951573755744C405.8238588968913,255.66361259004597,457.0113576253255,270.331806295023,482.60510698954266,278.83256981417816C508.19885635375977,287.3333333333333,508.19885635375977,289.6666666666667,508.19885635375977,290.8333333333333L508.19885635375977,292"></path><path marker-end="url(#graph-div_classDiagram-extensionEnd)" style="fill:none" class="edge-pattern-solid relation" data-edge="true" id="id_hello_helloInode_6" d="M358.14204025268555,411L358.14204025268555,415.1666666666667C358.14204025268555,419.3333333333333,358.14204025268555,427.6666666666667,358.14204025268555,433C358.14204025268555,438.3333333333333,358.14204025268555,440.6666666666667,358.14204025268555,441.8333333333333L358.14204025268555,443"></path><path marker-end="url(#graph-div_classDiagram-extensionEnd)" style="fill:none" class="edge-pattern-solid relation" data-edge="true" id="id_helloInode_hellloFirstDataBlock_7" d="M358.14204025268555,584L358.14204025268555,588.1666666666666C358.14204025268555,592.3333333333334,358.14204025268555,600.6666666666666,358.14204025268555,606C358.14204025268555,611.3333333333334,358.14204025268555,613.6666666666666,358.14204025268555,614.8333333333334L358.14204025268555,616"></path></g><g class="edgeLabels"><g class="edgeLabel"><g transform="translate(0, 0)" data-id="id_root_Inode_root_First_Data_Block_1" class="label"><foreignObject height="0" width="0"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel"><g transform="translate(0, 0)" data-id="id_root_First_Data_Block_-_2" class="label"><foreignObject height="0" width="0"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel"><g transform="translate(0, 0)" data-id="id_root_First_Data_Block_--_3" class="label"><foreignObject height="0" width="0"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel"><g transform="translate(0, 0)" data-id="id_root_First_Data_Block_hello_4" class="label"><foreignObject height="0" width="0"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel"><g transform="translate(0, 0)" data-id="id_root_First_Data_Block_lost_found_5" class="label"><foreignObject height="0" width="0"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel"><g transform="translate(0, 0)" data-id="id_hello_helloInode_6" class="label"><foreignObject height="0" width="0"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel"><g transform="translate(0, 0)" data-id="id_helloInode_hellloFirstDataBlock_7" class="label"><foreignObject height="0" width="0"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="edgeLabel"></span></div></foreignObject></g></g></g><g class="nodes"><g transform="translate(283.11363220214844, 69.5)" data-id="root_Inode" data-node="true" id="classId-root_Inode-120" class="node default"><rect height="123" width="186.7727508544922" y="-61.5" x="-93.3863754272461" class="outer title-state"></rect><line y2="-31.5" y1="-31.5" x2="93.3863754272461" x1="-93.3863754272461" class="divider"></line><line y2="50.5" y1="50.5" x2="93.3863754272461" x1="-93.3863754272461" class="divider"></line><g class="label"><foreignObject height="0" width="0"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel"></span></div></foreignObject><foreignObject transform="translate( -31, -54)" height="18" width="62" class="classTitle"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel">root_Inode</span></div></foreignObject><foreignObject transform="translate( -85.8863754272461, -20)" height="18" width="69.06818389892578"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel">inode = 0x02</span></div></foreignObject><foreignObject transform="translate( -85.8863754272461, 2)" height="18" width="82.5113754272461"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel">0x4100 - 0x41ff</span></div></foreignObject><foreignObject transform="translate( -85.8863754272461, 24)" height="18" width="171.7727508544922"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel">Pointer to first data block = 0xa1</span></div></foreignObject></g></g><g transform="translate(283.11363220214844, 220.5)" data-id="root_First_Data_Block" data-node="true" id="classId-root_First_Data_Block-121" class="node default"><rect height="79" width="143.0454559326172" y="-39.5" x="-71.5227279663086" class="outer title-state"></rect><line y2="-9.5" y1="-9.5" x2="71.5227279663086" x1="-71.5227279663086" class="divider"></line><line y2="28.5" y1="28.5" x2="71.5227279663086" x1="-71.5227279663086" class="divider"></line><g class="label"><foreignObject height="0" width="0"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel"></span></div></foreignObject><foreignObject transform="translate( -64.0227279663086, -32)" height="18" width="128.0454559326172" class="classTitle"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel">root_First_Data_Block</span></div></foreignObject><foreignObject transform="translate( -64.0227279663086, 2)" height="18" width="83.05682373046875"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel">start = 0xa1000</span></div></foreignObject></g></g><g transform="translate(58.02840805053711, 360.5)" data-id="-" data-node="true" id="classId---122" class="node default"><rect height="101" width="100.05682373046875" y="-50.5" x="-50.028411865234375" class="outer title-state"></rect><line y2="-20.5" y1="-20.5" x2="50.028411865234375" x1="-50.028411865234375" class="divider"></line><line y2="39.5" y1="39.5" x2="50.028411865234375" x1="-50.028411865234375" class="divider"></line><g class="label"><foreignObject height="0" width="0"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel"></span></div></foreignObject><foreignObject transform="translate( -2, -43)" height="18" width="4" class="classTitle"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel">-</span></div></foreignObject><foreignObject transform="translate( -42.528411865234375, -9)" height="18" width="69.06818389892578"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel">inode = 0x02</span></div></foreignObject><foreignObject transform="translate( -42.528411865234375, 13)" height="18" width="85.05682373046875"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel">File type = 0x02</span></div></foreignObject></g></g><g transform="translate(208.08522415161133, 360.5)" data-id="--" data-node="true" id="classId----123" class="node default"><rect height="101" width="100.05682373046875" y="-50.5" x="-50.028411865234375" class="outer title-state"></rect><line y2="-20.5" y1="-20.5" x2="50.028411865234375" x1="-50.028411865234375" class="divider"></line><line y2="39.5" y1="39.5" x2="50.028411865234375" x1="-50.028411865234375" class="divider"></line><g class="label"><foreignObject height="0" width="0"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel"></span></div></foreignObject><foreignObject transform="translate( -4, -43)" height="18" width="8" class="classTitle"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel">--</span></div></foreignObject><foreignObject transform="translate( -42.528411865234375, -9)" height="18" width="69.06818389892578"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel">inode = 0x02</span></div></foreignObject><foreignObject transform="translate( -42.528411865234375, 13)" height="18" width="85.05682373046875"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel">File type = 0x02</span></div></foreignObject></g></g><g transform="translate(358.14204025268555, 360.5)" data-id="hello" data-node="true" id="classId-hello-124" class="node default"><rect height="101" width="100.05682373046875" y="-50.5" x="-50.028411865234375" class="outer title-state"></rect><line y2="-20.5" y1="-20.5" x2="50.028411865234375" x1="-50.028411865234375" class="divider"></line><line y2="39.5" y1="39.5" x2="50.028411865234375" x1="-50.028411865234375" class="divider"></line><g class="label"><foreignObject height="0" width="0"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel"></span></div></foreignObject><foreignObject transform="translate( -14.005681991577148, -43)" height="18" width="28.011363983154297" class="classTitle"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel">hello</span></div></foreignObject><foreignObject transform="translate( -42.528411865234375, -9)" height="18" width="68.38636779785156"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel">inode = 0x0c</span></div></foreignObject><foreignObject transform="translate( -42.528411865234375, 13)" height="18" width="85.05682373046875"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel">File type = 0x01</span></div></foreignObject></g></g><g transform="translate(508.19885635375977, 360.5)" data-id="lost_found" data-node="true" id="classId-lost_found-125" class="node default"><rect height="101" width="100.05682373046875" y="-50.5" x="-50.028411865234375" class="outer title-state"></rect><line y2="-20.5" y1="-20.5" x2="50.028411865234375" x1="-50.028411865234375" class="divider"></line><line y2="39.5" y1="39.5" x2="50.028411865234375" x1="-50.028411865234375" class="divider"></line><g class="label"><foreignObject height="0" width="0"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel"></span></div></foreignObject><foreignObject transform="translate( -30.66477394104004, -43)" height="18" width="61.32954788208008" class="classTitle"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel">lost_found</span></div></foreignObject><foreignObject transform="translate( -42.528411865234375, -9)" height="18" width="69.06818389892578"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel">inode = 0x0b</span></div></foreignObject><foreignObject transform="translate( -42.528411865234375, 13)" height="18" width="85.05682373046875"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel">File type = 0x02</span></div></foreignObject></g></g><g transform="translate(358.14204025268555, 522.5)" data-id="helloInode" data-node="true" id="classId-helloInode-126" class="node default"><rect height="123" width="200.1136474609375" y="-61.5" x="-100.05682373046875" class="outer title-state"></rect><line y2="-31.5" y1="-31.5" x2="100.05682373046875" x1="-100.05682373046875" class="divider"></line><line y2="50.5" y1="50.5" x2="100.05682373046875" x1="-100.05682373046875" class="divider"></line><g class="label"><foreignObject height="0" width="0"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel"></span></div></foreignObject><foreignObject transform="translate( -30, -54)" height="18" width="60" class="classTitle"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel">helloInode</span></div></foreignObject><foreignObject transform="translate( -92.55682373046875, -20)" height="18" width="68.38636779785156"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel">inode = 0x0c</span></div></foreignObject><foreignObject transform="translate( -92.55682373046875, 2)" height="18" width="82.5113754272461"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel">0x4b00 - 0x4bff</span></div></foreignObject><foreignObject transform="translate( -92.55682373046875, 24)" height="18" width="185.1136474609375"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel">Pointer to first data block = 0x0200</span></div></foreignObject></g></g><g transform="translate(358.14204025268555, 695.5)" data-id="hellloFirstDataBlock" data-node="true" id="classId-hellloFirstDataBlock-127" class="node default"><rect height="123" width="223.5" y="-61.5" x="-111.75" class="outer title-state"></rect><line y2="-31.5" y1="-31.5" x2="111.75" x1="-111.75" class="divider"></line><line y2="50.5" y1="50.5" x2="111.75" x1="-111.75" class="divider"></line><g class="label"><foreignObject height="0" width="0"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel"></span></div></foreignObject><foreignObject transform="translate( -58.01704788208008, -54)" height="18" width="116.03409576416016" class="classTitle"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel">hellloFirstDataBlock</span></div></foreignObject><foreignObject transform="translate( -104.25, -20)" height="18" width="89.7386474609375"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel">start = 0x200000</span></div></foreignObject><foreignObject transform="translate( -104.25, 2)" height="18" width="208.5"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel">data = 68 65 6c 6c 6f 77 6f 72  6c 64 0a</span></div></foreignObject><foreignObject transform="translate( -104.25, 24)" height="18" width="133.0795440673828"><div style="display: inline-block; white-space: nowrap;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel">dataConvert = helloworld</span></div></foreignObject></g></g></g></g></g></svg>
+</p>
+</div></li>
+</ol>
+</div>
+<div id="outline-container-org30fbe6f" class="outline-4">
+<h4 id="org30fbe6f"><span class="section-number-4">4.2.1</span> Sum up</h4>
+<div class="outline-text-4" id="text-4-2-1">
+<p>
+In your email message, please answer the following questions.
+</p>
+<ol class="org-ol">
+<li>How many hours you spent in this section?
+<ul class="org-ul">
+<li>About 6 hours</li>
+</ul></li>
+<li>What's the major difficulties you met in this section? 
+<ol class="org-ol">
+<li>When I first met 'mount' , it's too abstract to understand for me.</li>
+</ol></li>
+
+<li>How did you solve (or try solving) them?
+<ul class="org-ul">
+<li>I do a lot practice to make 'mount' more specific.</li>
+</ul></li>
+<li>Have you learnt anything? Or your time was just wasted?
+<ul class="org-ul">
+<li>I've learnt the definition of 'mount' in cs. And how ext2 find file datas.</li>
+</ul></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: 罗俊博(20211152002)</p>
+<p class="date">Created: 2023-12-18 Mon 11:10</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
